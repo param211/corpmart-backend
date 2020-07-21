@@ -83,6 +83,9 @@ DATABASES = {
 }
 
 
+# setting the defaullt user model, for auth
+AUTH_USER_MODEL = 'corpmart.User'
+
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
