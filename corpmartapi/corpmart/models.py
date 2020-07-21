@@ -12,14 +12,16 @@ class CustomUserManager(BaseUserManager):
     Custom user model manager where email is the unique identifiers
     for authentication instead of usernames.
     """
-    def create_user(self, email, password, **extra_fields):
+    def create_user(self, email, mobile, password="", **extra_fields):
         """
         Create and save a User with the given email and password.
         """
         if not email:
             raise ValueError(_('The Email must be set'))
         email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
+        if not mobile:
+            raise ValueError(_('The Mobile number must be set'))
+        user = self.model(email=email, mobile=mobile, **extra_fields)
         user.set_password(password)
         user.save()
         return user
@@ -41,15 +43,15 @@ class CustomUserManager(BaseUserManager):
 
 class User(AbstractUser):
 
-    # START of settings from the website---------------------
     username = None
     email = models.EmailField(_('email address'), unique=True)
+    country_code = models.IntegerField(default=91, max_length=3)
+    mobile = models.IntegerField(max_length=11, unique=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
     objects = CustomUserManager()
-    # END of settings----------------------------------------
 
     def __str__(self):
-        return self.email
+        return f"{self.email},{self.mobile}"
