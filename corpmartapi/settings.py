@@ -25,7 +25,7 @@ SECRET_KEY = '--@p-_h7l*=1mckpxbg9ox-n%&v_t*w#mmav$7=&76l+my#=4a'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corpmartapi.corpmart',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
