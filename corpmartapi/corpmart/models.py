@@ -64,3 +64,9 @@ class User(AbstractUser):
 
     def __str__(self):
         return f"{self.email},{self.mobile}"
+
+
+class OneTimePassword(models.Model):
+    otp = models.IntegerField()
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
