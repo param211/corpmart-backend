@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework_simplejwt import views as jwt_views
 from corpmartapi.corpmart import views
 from rest_framework import routers
 
@@ -26,6 +25,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include(router.urls)),
     path('api/v1/generate_otp/mobile/', views.GenerateOTPMobileView.as_view(), name='generate_otp_with_mobile'),
-    path('api/v1/token/obtain/', views.MyTokenObtainPairView.as_view(), name='token_create'),
-    path('api/v1/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/v1/login/', views.LoginView.as_view(), name="login"),
 ]

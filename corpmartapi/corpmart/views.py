@@ -1,26 +1,29 @@
 from random import randint
 from django.shortcuts import render
 from django.contrib.auth import authenticate
-from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import permissions
 from rest_framework import viewsets, views, generics
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
-from .models import User
-from .serializers import MobileTokenObtainPairSerializer, EmailTokenObtainPairSerializer, UserSerializer
+from .models import User, OneTimePassword
+from .serializers import UserSerializer
 # Create your views here.
 
 
-# Custom simple_jwt view for bypassing password validation
-class MyTokenObtainPairView(TokenObtainPairView):
-    def get_serializer_class(self):
-        if ("otp" in self.request.data) and ("mobile" in self.request.data):
-            return MobileTokenObtainPairSerializer
-        elif ("otp" in self.request.data) and ("email" in self.request.data):
-            return EmailTokenObtainPairSerializer
-        return TokenObtainPairSerializer
+class LoginView(APIView):
+    permission_classes = ()
+
+    def post(self, request,):
+        email = request.data.get("email")
+        otp = request.data.get('otp')
+        # password = request.data.get("password")
+        user = User.objects.get(email=email)
+        existing_otp = OneTimePassword.objects.get(user__email=email)
+        if existing_otp == otp:
+            return Response({"token": user.auth_token.key, "id": user.id},)
+        else:
+            return Response({"error": "Wrong Credentials"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class GenerateOTPMobileView(APIView):
