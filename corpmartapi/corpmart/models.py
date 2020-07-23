@@ -70,3 +70,64 @@ class OneTimePassword(models.Model):
     otp = models.IntegerField()
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="onetimepassword", on_delete=models.CASCADE)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class Business(models.Model):
+    STATE_LIST = (
+        ('Assam', 'Assam'),
+        ('Delhi', 'Delhi'),
+    )
+    COMPANY_TYPE_LIST = (
+        ('LTD', 'LTD'),
+        ('LLC', 'LLC'),
+    )
+    SUB_TYPE_LIST = (
+        ('LTD', 'LTD'),
+        ('LLC', 'LLC'),
+    )
+    INDUSTRY_LIST = (
+        ('TEXTILE', 'TEXTILE'),
+        ('STEEL', 'STEEL'),
+    )
+
+    posted_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='businesses', on_delete=models.CASCADE)
+    business_name = models.CharField(max_length=500)
+    state = models.CharField(max_length=100, choices=STATE_LIST, default='Assam')
+    country = models.CharField(max_length=100, default='India')
+    company_type = models.CharField(max_length=200, choices=COMPANY_TYPE_LIST, default='LTD')
+    sub_type = models.CharField(max_length=200, choices=SUB_TYPE_LIST, default='LTD')
+    industry = models.CharField(max_length=200, choices=INDUSTRY_LIST, default='TEXTILE')
+    sale_description = models.CharField(max_length=500, blank=True)
+    year_of_incorporation = models.IntegerField(null=True, blank=True)
+    has_gst_number = models.BooleanField(null=True)
+    has_import_export_code = models.BooleanField(null=True)
+    has_bank_account = models.BooleanField(null=True)
+    has_other_license = models.BooleanField(null=True)
+    other_license = models.CharField(max_length=500, blank=True)
+    capital = models.IntegerField(null=True, blank=True)
+    user_defined_selling_price = models.IntegerField(null=True, blank=True)
+    admin_defined_selling_price = models.IntegerField(null=True, blank=True)
+
+
+class Balancesheet(models.Model):
+    business = models.ForeignKey(Business, related_name='balancesheets', on_delete=models.CASCADE)
+    file = models.FileField(upload_to='balancesheet')
+    uploaded_on = models.DateTimeField(auto_now_add=True)
+
+
+class BalancesheetPayment(models.Model):
+    balancesheet = models.ForeignKey(Balancesheet, related_name='balancesheetpayments', on_delete=models.CASCADE)
+    paid_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='balancesheetpayments', on_delete=models.CASCADE)
+    paid_on = models.DateTimeField(auto_now_add=True)
+    paid_amount = models.IntegerField()
+    transaction_id = models.IntegerField()
+
+
+class Blog(models.Model):
+    blog_title = models.CharField(max_length=200)
+    blog_text = models.CharField(max_length=10000)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    posted_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+# class Testimonial(models.Model):
