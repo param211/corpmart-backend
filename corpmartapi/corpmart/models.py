@@ -68,5 +68,5 @@ class User(AbstractUser):
 
 class OneTimePassword(models.Model):
     otp = models.IntegerField()
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,related_name="onetimepassword", on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="onetimepassword", on_delete=models.CASCADE)
+    updated_at = models.DateTimeField(auto_now=True)

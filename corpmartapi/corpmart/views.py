@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate
 from rest_framework import permissions
 from rest_framework import viewsets, views, generics
+from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
@@ -16,26 +17,41 @@ class LoginView(APIView):
 
     def post(self, request,):
         email = request.data.get("email")
+        mobile = request.data.get("mobile")
         otp = request.data.get('otp')
-        # password = request.data.get("password")
-        user = User.objects.get(email=email)
-        existing_otp = OneTimePassword.objects.get(user__email=email)
-        if existing_otp == otp:
-            return Response({"token": user.auth_token.key, "id": user.id},)
+
+        if email:
+            user = User.objects.get(email=email)
+        elif mobile:
+            user = User.objects.get(mobile=mobile)
+
+        otp_object = OneTimePassword.objects.get(user=user)
+        if otp_object.otp == otp:
+            token, created = Token.objects.get_or_create(user=user)
+            return Response({"token": token.key, "id": user.id, "mobile": user.mobile, "email": user.email},)
         else:
             return Response({"error": "Wrong Credentials"}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class GenerateOTPMobileView(APIView):
+class GenerateOTPView(APIView):
     permission_classes = ()
 
-    def post(self, request,):
+    def post(self, request, ):
+        email = request.data.get("email")
         mobile = request.data.get("mobile")
-        user = User.objects.get(mobile=mobile)
+        if email:
+            user = User.objects.get(email=email)
+        elif mobile:
+            user = User.objects.get(mobile=mobile)
+
         random_otp = randint(10000, 99999)
+
         if user:
-            user.onetimepassword_set.otp = random_otp
-            return Response({"token": random_otp},)
+            obj, created = OneTimePassword.objects.update_or_create(
+                user=user,
+                defaults={'otp': random_otp},
+            )
+            return Response({"token": random_otp}, )
         else:
             return Response({"error": "Wrong Credentials"}, status=status.HTTP_400_BAD_REQUEST)
 

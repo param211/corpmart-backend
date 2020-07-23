@@ -24,6 +24,6 @@ router.register(r'user', views.UserViewSet, basename="user")
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include(router.urls)),
-    path('api/v1/generate_otp/mobile/', views.GenerateOTPMobileView.as_view(), name='generate_otp_with_mobile'),
+    path('api/v1/generate_otp/', views.GenerateOTPView.as_view(), name='generate_otp'),
     path('api/v1/login/', views.LoginView.as_view(), name="login"),
 ]
