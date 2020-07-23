@@ -1,6 +1,7 @@
 from random import randint
 from django.shortcuts import render
 from django.contrib.auth import authenticate
+from django.core.mail import send_mail
 from rest_framework import permissions
 from rest_framework import viewsets, views, generics
 from rest_framework.authtoken.models import Token
@@ -51,7 +52,9 @@ class GenerateOTPView(APIView):
                 user=user,
                 defaults={'otp': random_otp},
             )
-            return Response({"token": random_otp}, )
+            otp_string = f"Your OTP for CorpMart is {random_otp}."
+            send_mail("OTP for CorpMart", otp_string, "paramchauhan21@gmail.com", [user.email])
+            return Response({"token_for_testing": random_otp}, )
         else:
             return Response({"error": "Wrong Credentials"}, status=status.HTTP_400_BAD_REQUEST)
 

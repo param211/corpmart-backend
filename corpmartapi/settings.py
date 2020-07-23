@@ -138,3 +138,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Twilio SendGrid
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_PASSWORD = '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'
