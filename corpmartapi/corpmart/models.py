@@ -56,6 +56,7 @@ class User(AbstractUser):
     email = models.EmailField(_('email address'), unique=True)
     country_code = models.IntegerField(default=91)
     mobile = models.IntegerField(unique=True)
+    organisation_name = models.CharField(max_length=200, blank=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['mobile']
