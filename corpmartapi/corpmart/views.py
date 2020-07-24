@@ -9,8 +9,9 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
-from .models import User, OneTimePassword
-from .serializers import UserSerializer, SignupSerializer
+from .models import User, OneTimePassword, Business
+from .serializers import UserSerializer, SignupSerializer, BusinessListSerializer, BusinessDetailSerializer, \
+    PostBusinessSerializer
 # Create your views here.
 
 
@@ -102,3 +103,26 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
         elif user_mobile:
             queryset = User.objects.filter(mobile=user_mobile)
         return queryset
+
+
+class PostBusiness(generics.CreateAPIView):
+    """
+    Allows to post business
+    """
+    serializer_class = PostBusinessSerializer
+
+
+class BusinessListViewset(viewsets.ReadOnlyModelViewSet):
+    """
+    Allows business list to be viewed and queried
+    """
+    serializer_class = BusinessListSerializer
+    queryset = Business.objects.all()
+
+
+class BusinessDetailViewset(viewsets.ReadOnlyModelViewSet):
+    """
+    Allows business detail to be viewed
+    """
+    serializer_class = BusinessDetailSerializer
+    queryset = Business.objects.all()

@@ -50,6 +50,7 @@ class CustomUserManager(BaseUserManager):
         return user
 
 
+# TODO: exclude fieds like staff_status from admin dashboard
 class User(AbstractUser):
 
     username = None
@@ -64,7 +65,7 @@ class User(AbstractUser):
     objects = CustomUserManager()
 
     def __str__(self):
-        return f"{self.email},{self.mobile}"
+        return f"{self.first_name} {self.last_name} | {self.email} | {self.mobile}"
 
 
 class OneTimePassword(models.Model):
@@ -110,6 +111,9 @@ class Business(models.Model):
     user_defined_selling_price = models.IntegerField(null=True, blank=True)
     admin_defined_selling_price = models.IntegerField(null=True, blank=True)
 
+    def __str__(self):
+        return f"ID: {self.id} | NAME: {self.business_name}"
+
 
 class Balancesheet(models.Model):
     business = models.ForeignKey(Business, related_name='balancesheets', on_delete=models.CASCADE)
@@ -130,7 +134,7 @@ class Blog(models.Model):
     blog_text = models.CharField(max_length=10000)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    posted_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    posted_by = models.CharField(max_length=100)
 
 
 class Testimonial(models.Model):

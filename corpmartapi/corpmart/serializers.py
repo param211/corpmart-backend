@@ -2,7 +2,7 @@ import datetime as dt
 import json
 from rest_framework import exceptions
 from rest_framework import serializers
-from .models import OneTimePassword, User
+from .models import OneTimePassword, User, Business
 from rest_framework.authtoken.models import Token
 
 
@@ -36,3 +36,35 @@ class OneTimePasswordSerializer(serializers.ModelSerializer):
         model = OneTimePassword
         fields = '__all__'
         depth = 1
+
+
+class PostBusinessSerializer(serializers.ModelSerializer):
+    posted_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
+    class Meta:
+        model = Business
+        exclude = ['is_verified', 'admin_defined_selling_price']
+
+
+# Used for listing the businesses
+class BusinessListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Business
+        fields = ['id', 'sale_description', 'company_type', 'sub_type', 'industry', 'state',
+                  'user_defined_selling_price', 'admin_defined_selling_price']
+
+
+class BusinessDetailSerializer(serializers.ModelSerializer):
+    balancesheet_available = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Business
+        fields = ['id', 'sale_description', 'company_type', 'sub_type', 'industry', 'year_of_incorporation', 'state',
+                  'capital', 'user_defined_selling_price', 'admin_defined_selling_price', 'has_gst_number',
+                  'has_bank_account', 'has_import_export_code', 'has_other_license', 'other_license',
+                  'balancesheet_available']
+
+    @staticmethod
+    def get_balancesheet_available(obj):
+        available = obj.balancesheets.exists()
+        return available
