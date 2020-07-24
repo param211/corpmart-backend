@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 from .models import User, OneTimePassword
-from .serializers import UserSerializer
+from .serializers import UserSerializer, SignupSerializer
 # Create your views here.
 
 
@@ -53,26 +53,26 @@ class GenerateOTPView(APIView):
                 user=user,
                 defaults={'otp': random_otp},
             )
-            # For Email-------------------------------------------------------------------------------------------------
-            # https://www.twilio.com/blog/using-twilio-sendgrid-send-emails-python-django
-            otp_string = f"Your OTP for CorpMart is {random_otp}."
-            send_mail("OTP for CorpMart", otp_string, "paramchauhan21@gmail.com", [user.email])
-            # End Email-------------------------------------------------------------------------------------------------
-
-            # For SMS---------------------------------------------------------------------------------------------------
-            # https://docs.fast2sms.com/#post
-            url = "https://www.fast2sms.com/dev/bulk"
-            var = "{#AA#}"
-            payload = f"sender_id=FSTSMS&language=english&route=qt&numbers={user.mobile}&message=32122&variables={var}&variables_values={random_otp}"
-            headers = {
-                'authorization': "liDGeo7BY84UcEmWIQxZCA0qFJjMS5nfkug6NwL1OvpHVaTyr35QimMDA3EVvXpS4FyskUIeH6TGw12r",
-                'cache-control': "no-cache",
-                'content-type': "application/x-www-form-urlencoded"
-            }
-
-            resp = requests.request("POST", url, data=payload, headers=headers)
-            # print(resp.text)
-            # End SMS---------------------------------------------------------------------------------------------------
+            # # For Email-------------------------------------------------------------------------------------------------
+            # # https://www.twilio.com/blog/using-twilio-sendgrid-send-emails-python-django
+            # otp_string = f"Your OTP for CorpMart is {random_otp}."
+            # send_mail("OTP for CorpMart", otp_string, "paramchauhan21@gmail.com", [user.email])
+            # # End Email-------------------------------------------------------------------------------------------------
+            #
+            # # For SMS---------------------------------------------------------------------------------------------------
+            # # https://docs.fast2sms.com/#post
+            # url = "https://www.fast2sms.com/dev/bulk"
+            # var = "{#AA#}"
+            # payload = f"sender_id=FSTSMS&language=english&route=qt&numbers={user.mobile}&message=32122&variables={var}&variables_values={random_otp}"
+            # headers = {
+            #     'authorization': "liDGeo7BY84UcEmWIQxZCA0qFJjMS5nfkug6NwL1OvpHVaTyr35QimMDA3EVvXpS4FyskUIeH6TGw12r",
+            #     'cache-control': "no-cache",
+            #     'content-type': "application/x-www-form-urlencoded"
+            # }
+            #
+            # resp = requests.request("POST", url, data=payload, headers=headers)
+            # # print(resp.text)
+            # # End SMS---------------------------------------------------------------------------------------------------
             return Response({"token_for_testing": random_otp}, )
         else:
             return Response({"error": "Wrong Credentials"}, status=status.HTTP_400_BAD_REQUEST)
@@ -85,12 +85,14 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
     def get_queryset(self):
-        # email = self.request.query_params.get('email')
         user_id = self.request.query_params.get('user_id')
-        # token = self.request.authenticators
         queryset = User.objects.filter(id=1)
-        # if not validate_email(email):
-        #     queryset = User.objects.filter(email=email)
         if user_id:
             queryset = User.objects.filter(id=user_id)
         return queryset
+
+
+class SignupView(generics.CreateAPIView):
+    authentication_classes = ()
+    permission_classes = ()
+    serializer_class = SignupSerializer

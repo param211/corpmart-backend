@@ -26,4 +26,5 @@ urlpatterns = [
     path('api/v1/', include(router.urls)),
     path('api/v1/generate_otp/', views.GenerateOTPView.as_view(), name='generate_otp'),
     path('api/v1/login/', views.LoginView.as_view(), name="login"),
+    path('api/v1/signup/', views.SignupView.as_view(), name="signup")
 ]
