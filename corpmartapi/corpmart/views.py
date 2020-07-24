@@ -14,25 +14,10 @@ from .serializers import UserSerializer, SignupSerializer
 # Create your views here.
 
 
-class LoginView(APIView):
+class SignupView(generics.CreateAPIView):
+    authentication_classes = ()
     permission_classes = ()
-
-    def post(self, request,):
-        email = request.data.get("email")
-        mobile = request.data.get("mobile")
-        otp = request.data.get('otp')
-
-        if email:
-            user = User.objects.get(email=email)
-        elif mobile:
-            user = User.objects.get(mobile=mobile)
-
-        otp_object = OneTimePassword.objects.get(user=user)
-        if otp_object.otp == otp:
-            token, created = Token.objects.get_or_create(user=user)
-            return Response({"token": token.key, "id": user.id, "mobile": user.mobile, "email": user.email},)
-        else:
-            return Response({"error": "Wrong Credentials"}, status=status.HTTP_400_BAD_REQUEST)
+    serializer_class = SignupSerializer
 
 
 class GenerateOTPView(APIView):
@@ -73,7 +58,28 @@ class GenerateOTPView(APIView):
             # resp = requests.request("POST", url, data=payload, headers=headers)
             # # print(resp.text)
             # # End SMS---------------------------------------------------------------------------------------------------
-            return Response({"token_for_testing": random_otp}, )
+            return Response({"otp_for_testing": random_otp}, )
+        else:
+            return Response({"error": "Wrong Credentials"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class LoginView(APIView):
+    permission_classes = ()
+
+    def post(self, request,):
+        email = request.data.get("email")
+        mobile = request.data.get("mobile")
+        otp = request.data.get('otp')
+
+        if email:
+            user = User.objects.get(email=email)
+        elif mobile:
+            user = User.objects.get(mobile=mobile)
+
+        otp_object = OneTimePassword.objects.get(user=user)
+        if otp_object.otp == otp:
+            token, created = Token.objects.get_or_create(user=user)
+            return Response({"token": token.key, "id": user.id, "mobile": user.mobile, "email": user.email},)
         else:
             return Response({"error": "Wrong Credentials"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -96,9 +102,3 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
         elif user_mobile:
             queryset = User.objects.filter(mobile=user_mobile)
         return queryset
-
-
-class SignupView(generics.CreateAPIView):
-    authentication_classes = ()
-    permission_classes = ()
-    serializer_class = SignupSerializer
