@@ -2,7 +2,7 @@ import datetime as dt
 import json
 from rest_framework import exceptions
 from rest_framework import serializers
-from .models import OneTimePassword, User, Business
+from .models import OneTimePassword, User, Business, ContactRequest
 from rest_framework.authtoken.models import Token
 
 
@@ -68,3 +68,12 @@ class BusinessDetailSerializer(serializers.ModelSerializer):
     def get_balancesheet_available(obj):
         available = obj.balancesheets.exists()
         return available
+
+
+class ContactRequestSerializer(serializers.ModelSerializer):
+    requested_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    business = BusinessListSerializer
+
+    class Meta:
+        model = ContactRequest
+        fields = '__all__'

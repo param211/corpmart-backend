@@ -142,3 +142,15 @@ class Testimonial(models.Model):
     designation = models.CharField(max_length=200)
     text = models.CharField(max_length=500)
     picture = models.ImageField(upload_to='profile_picture', blank=True)
+
+
+class ContactRequest(models.Model):
+    requested_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='contactrequests', on_delete=models.CASCADE)
+    business = models.ForeignKey(Business, related_name='contact_requests', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("requested_by", "business")
+
+    def __str__(self):
+        return f"Requested by -> {self.requested_by} || Business -> {self.business}"

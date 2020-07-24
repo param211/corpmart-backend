@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from .models import User, OneTimePassword, Business, Balancesheet, BalancesheetPayment, Blog, Testimonial
+from .models import User, OneTimePassword, Business, Balancesheet, BalancesheetPayment, Blog, Testimonial, \
+    ContactRequest
 
 
 # Register your models here.
@@ -15,3 +16,4 @@ admin.site.register(Balancesheet)
 admin.site.register(BalancesheetPayment)
 admin.site.register(Blog)
 admin.site.register(Testimonial)
+admin.site.register(ContactRequest)

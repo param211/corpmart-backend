@@ -11,7 +11,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from .models import User, OneTimePassword, Business
 from .serializers import UserSerializer, SignupSerializer, BusinessListSerializer, BusinessDetailSerializer, \
-    PostBusinessSerializer
+    PostBusinessSerializer, ContactRequestSerializer
 # Create your views here.
 
 
@@ -126,3 +126,10 @@ class BusinessDetailViewset(viewsets.ReadOnlyModelViewSet):
     """
     serializer_class = BusinessDetailSerializer
     queryset = Business.objects.all()
+
+
+class ContactRequest(generics.CreateAPIView):
+    """
+    Allows to post contact requests
+    """
+    serializer_class = ContactRequestSerializer
