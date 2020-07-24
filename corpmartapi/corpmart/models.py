@@ -54,8 +54,8 @@ class User(AbstractUser):
 
     username = None
     email = models.EmailField(_('email address'), unique=True)
-    country_code = models.IntegerField(default=91, max_length=3)
-    mobile = models.IntegerField(max_length=11, unique=True)
+    country_code = models.IntegerField(default=91)
+    mobile = models.IntegerField(unique=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['mobile']
@@ -130,4 +130,9 @@ class Blog(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     posted_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
-# class Testimonial(models.Model):
+
+class Testimonial(models.Model):
+    name = models.CharField(max_length=100)
+    designation = models.CharField(max_length=200)
+    text = models.CharField(max_length=500)
+    picture = models.ImageField(upload_to='profile_picture', blank=True)
