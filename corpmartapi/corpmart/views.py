@@ -78,17 +78,23 @@ class GenerateOTPView(APIView):
             return Response({"error": "Wrong Credentials"}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class UserViewSet(viewsets.ModelViewSet):
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    Allow users to be viewed/edited
+    Allow users to be viewed, get by ?user_id, user_ mobile and user_email
     """
     serializer_class = UserSerializer
 
     def get_queryset(self):
         user_id = self.request.query_params.get('user_id')
-        queryset = User.objects.filter(id=1)
+        user_email = self.request.query_params.get('user_email')
+        user_mobile = self.request.query_params.get("user_mobile")
+        queryset = User.objects.none()
         if user_id:
             queryset = User.objects.filter(id=user_id)
+        elif user_email:
+            queryset = User.objects.filter(email=user_email)
+        elif user_mobile:
+            queryset = User.objects.filter(mobile=user_mobile)
         return queryset
 
 

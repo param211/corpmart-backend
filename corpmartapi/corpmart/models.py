@@ -91,6 +91,7 @@ class Business(models.Model):
         ('STEEL', 'STEEL'),
     )
 
+    is_verified = models.BooleanField(null=True)
     posted_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='businesses', on_delete=models.CASCADE)
     business_name = models.CharField(max_length=500)
     state = models.CharField(max_length=100, choices=STATE_LIST, default='Assam')
