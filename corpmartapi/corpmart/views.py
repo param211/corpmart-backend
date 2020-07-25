@@ -9,9 +9,12 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
-from .models import User, OneTimePassword, Business
+from .models import User, OneTimePassword, Business, Balancesheet, BalancesheetPayment
 from .serializers import UserSerializer, SignupSerializer, BusinessListSerializer, BusinessDetailSerializer, \
     PostBusinessSerializer, ContactRequestSerializer
+# Razorpay settings
+import razorpay
+client = razorpay.Client(auth=("rzp_test_IjDKOxNLcSy87u", "HbmWwNZELof6dfhRWm7jwKMZ"))
 # Create your views here.
 
 
@@ -133,3 +136,62 @@ class ContactRequest(generics.CreateAPIView):
     Allows to post contact requests
     """
     serializer_class = ContactRequestSerializer
+
+
+# For creating a order through razorpay. Order is created when user clicks on the payment button
+# The order details are posted to razorpay and order_id is returned
+class OrderBalancesheet(APIView):
+
+    def post(self, request,):
+        business_id = request.data.get("business_id")
+        user = request.user
+
+        balancesheet = Balancesheet.objects.get(business__id=business_id)
+        b = BalancesheetPayment(balancesheet=balancesheet, user=user)
+        b.save()
+
+        # For razorpay note
+        ordered_by = f"Name: {user.first_name} {user.last_name}, Mobile: {user.mobile}"
+
+        # razorpay variables
+        order_amount = 50000
+        order_currency = 'INR'
+        notes = {'ordered_by': ordered_by}
+
+        response = client.order.create(amount=order_amount, currency=order_currency, notes=notes, payment_capture='1')
+
+        order_id = response['id']
+        if order_id:
+            b.order_id = order_id
+            b.save()
+            return Response({"order_id": order_id}, )
+
+        else:
+            return Response({"error": "Wrong Credentials"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SuccessfulPayment(APIView):
+
+    def post(self, request, ):
+        razorpay_payment_id = request.data.get("razorpay_payment_id")
+        razorpay_order_id = request.data.get("razorpay_order_id")
+        razorpay_signature = request.data.get("razorpay_signature")
+        order_id = request.data.get("order_id")
+
+        b = BalancesheetPayment.objects.get(order_id=order_id)
+        b.razorpay_payment_id = razorpay_payment_id
+        b.razorpay_order_id = razorpay_order_id
+        b.razorpay_signature = razorpay_signature
+
+        params_dictionary = {'razorpay_order_id': order_id, 'razorpay_payment_id': razorpay_payment_id,
+                             'razorpay_signature': razorpay_signature}
+        verify = client.utility.verify_payment_signature(params_dictionary)
+
+        if verify:
+            b.payment_sucessful = True
+            b.save()
+            return Response({"success": "Payment signature verified."},)
+
+        else:
+            return Response({"error": "Payment signature is wrong, possible malicious attempt. "},
+                            status=status.HTTP_400_BAD_REQUEST)

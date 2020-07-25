@@ -116,17 +116,26 @@ class Business(models.Model):
 
 
 class Balancesheet(models.Model):
-    business = models.ForeignKey(Business, related_name='balancesheets', on_delete=models.CASCADE)
+    business = models.OneToOneField(Business, related_name='balancesheets', on_delete=models.CASCADE)
     file = models.FileField(upload_to='balancesheet')
     uploaded_on = models.DateTimeField(auto_now_add=True)
 
 
+# Model to keep track of balancesheet orders
 class BalancesheetPayment(models.Model):
+    # transaction_id will be created each time "buy" button is pressed
+    transaction_id = models.AutoField(primary_key=True)
     balancesheet = models.ForeignKey(Balancesheet, related_name='balancesheetpayments', on_delete=models.CASCADE)
-    paid_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='balancesheetpayments', on_delete=models.CASCADE)
-    paid_on = models.DateTimeField(auto_now_add=True)
-    paid_amount = models.IntegerField()
-    transaction_id = models.IntegerField()
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='balancesheetpayments', on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True)
+    amount = models.IntegerField()
+    # when order is created, the returned order_id is stored here
+    order_id = models.CharField(max_length=200, unique=True)
+    # the following field is available only on successfull payment
+    payment_sucessful = models.BooleanField(null=True)
+    razorpay_payment_id = models.CharField(max_length=200, unique=True)
+    razorpay_order_id = models.CharField(max_length=200)
+    razorpay_signature = models.CharField(max_length=500)
 
 
 class Blog(models.Model):
