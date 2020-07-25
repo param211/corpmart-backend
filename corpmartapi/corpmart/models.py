@@ -133,9 +133,9 @@ class BalancesheetPayment(models.Model):
     order_id = models.CharField(max_length=200, unique=True)
     # the following field is available only on successfull payment
     payment_sucessful = models.BooleanField(null=True)
-    razorpay_payment_id = models.CharField(max_length=200, unique=True)
-    razorpay_order_id = models.CharField(max_length=200)
-    razorpay_signature = models.CharField(max_length=500)
+    razorpay_payment_id = models.CharField(max_length=200, blank=True)
+    razorpay_order_id = models.CharField(max_length=200, blank=True)
+    razorpay_signature = models.CharField(max_length=500, blank=True)
 
 
 class Blog(models.Model):

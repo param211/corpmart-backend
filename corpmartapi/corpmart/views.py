@@ -11,7 +11,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from .models import User, OneTimePassword, Business, Balancesheet, BalancesheetPayment
 from .serializers import UserSerializer, SignupSerializer, BusinessListSerializer, BusinessDetailSerializer, \
-    PostBusinessSerializer, ContactRequestSerializer
+    PostBusinessSerializer, ContactRequestSerializer, BalancesheetSerializer
 # Razorpay settings
 import razorpay
 client = razorpay.Client(auth=("rzp_test_IjDKOxNLcSy87u", "HbmWwNZELof6dfhRWm7jwKMZ"))
@@ -146,10 +146,6 @@ class OrderBalancesheet(APIView):
         business_id = request.data.get("business_id")
         user = request.user
 
-        balancesheet = Balancesheet.objects.get(business__id=business_id)
-        b = BalancesheetPayment(balancesheet=balancesheet, user=user)
-        b.save()
-
         # For razorpay note
         ordered_by = f"Name: {user.first_name} {user.last_name}, Mobile: {user.mobile}"
 
@@ -159,10 +155,11 @@ class OrderBalancesheet(APIView):
         notes = {'ordered_by': ordered_by}
 
         response = client.order.create(amount=order_amount, currency=order_currency, notes=notes, payment_capture='1')
-
         order_id = response['id']
+
         if order_id:
-            b.order_id = order_id
+            balancesheet = Balancesheet.objects.get(business__id=business_id)
+            b = BalancesheetPayment(balancesheet=balancesheet, user=user, order_id=order_id)
             b.save()
             return Response({"order_id": order_id}, )
 
@@ -190,8 +187,30 @@ class SuccessfulPayment(APIView):
         if verify:
             b.payment_sucessful = True
             b.save()
-            return Response({"success": "Payment signature verified."},)
+            return Response({"success": "Payment signature verified.", "balancesheet_id": b.balancesheet__id},)
 
         else:
-            return Response({"error": "Payment signature is wrong, possible malicious attempt. "},
+            b.payment_sucessful = False
+            b.save()
+            return Response({"error": "Payment signature is wrong, possible malicious attempt."},
                             status=status.HTTP_400_BAD_REQUEST)
+
+
+class BalancesheetViewset(viewsets.ReadOnlyModelViewSet):
+    """
+    For viewing balancesheets
+    """
+    serializer_class = BalancesheetSerializer
+
+    def get_queryset(self):
+        queryset = Balancesheet.objects.none()
+        user = self.request.user
+        balancesheet_id = self.request.query_params.get('balancesheet_id')
+        b = Balancesheet.objects.get(pk=balancesheet_id)
+        bp = BalancesheetPayment.objects.get(balancesheet=b, user=user)
+        has_paid = bp.payment_sucessful
+
+        if has_paid:
+            queryset = Balancesheet.objects.filter(id=balancesheet_id)
+
+        return queryset

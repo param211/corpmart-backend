@@ -2,7 +2,7 @@ import datetime as dt
 import json
 from rest_framework import exceptions
 from rest_framework import serializers
-from .models import OneTimePassword, User, Business, ContactRequest
+from .models import OneTimePassword, User, Business, ContactRequest, Balancesheet
 from rest_framework.authtoken.models import Token
 
 
@@ -77,3 +77,10 @@ class ContactRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = ContactRequest
         fields = '__all__'
+
+
+class BalancesheetSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Balancesheet
+        fields = ['file']
