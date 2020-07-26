@@ -1,5 +1,5 @@
 from django.contrib import admin
-
+from django.contrib.auth.admin import UserAdmin
 from .models import User, OneTimePassword, Business, Balancesheet, BalancesheetPayment, Blog, Testimonial, \
     ContactRequest
 from django.apps import apps
@@ -13,19 +13,50 @@ for app_config in apps.get_app_configs():
             admin.site.unregister(model)
 
 
-# admin.site.unregister(Token)
+class CustomUserAdmin(UserAdmin):
+    model = User
+    list_display = ('email', 'first_name', 'last_name', 'mobile')
+    list_filter = ('email', 'mobile',)
+    fieldsets = (
+        (None, {'fields': ('email', 'mobile', 'country_code', 'organisation_name')}),
+    )
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email',)
+        }
+        ),
+    )
+    search_fields = ('email', 'mobile')
+    ordering = ('email',)
 
 
 # Register your models here.
-class CustomUserAdmin(admin.ModelAdmin):
-    model = User
+class CustomBalancesheetAdmin(admin.ModelAdmin):
+    list_display = ('business', 'uploaded_on',)
+    ordering = ('uploaded_on',)
+
+
+class CustomBalancesheetPaymentAdmin(admin.ModelAdmin):
+    list_display = ('transaction_id', 'balancesheet', 'user', 'amount', 'date', 'order_id',
+                    'payment_successful')
+    ordering = ('date', 'transaction_id')
+    search_fields = ('transaction_id', 'order_id')
+    list_filter = ('user', 'balancesheet',)
+
+
+class CustomBusinessAdmin(admin.ModelAdmin):
+    list_display = ('id', 'business_name', 'posted_by', 'is_verified',)
+    ordering = ('id',)
+    list_filter = ('is_verified', 'state','industry', 'company_type', 'sub_type')
+    search_fields = ('id', 'business_name')
 
 
 admin.site.register(User, CustomUserAdmin)
-admin.site.register(OneTimePassword)
-admin.site.register(Business)
-admin.site.register(Balancesheet)
-admin.site.register(BalancesheetPayment)
+# admin.site.register(OneTimePassword)
+admin.site.register(Business, CustomBusinessAdmin)
+admin.site.register(Balancesheet, CustomBalancesheetAdmin)
+admin.site.register(BalancesheetPayment, CustomBalancesheetPaymentAdmin)
 admin.site.register(Blog)
 admin.site.register(Testimonial)
 admin.site.register(ContactRequest)

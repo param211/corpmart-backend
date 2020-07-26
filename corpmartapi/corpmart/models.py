@@ -120,6 +120,9 @@ class Balancesheet(models.Model):
     file = models.FileField(upload_to='balancesheet')
     uploaded_on = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"Business: {self.business}"
+
 
 # Model to keep track of balancesheet orders
 class BalancesheetPayment(models.Model):
@@ -132,7 +135,7 @@ class BalancesheetPayment(models.Model):
     # when order is created, the returned order_id is stored here
     order_id = models.CharField(max_length=200, unique=True)
     # the following field is available only on successfull payment
-    payment_sucessful = models.BooleanField(null=True)
+    payment_successful = models.BooleanField(null=True)
     razorpay_payment_id = models.CharField(max_length=200, blank=True)
     razorpay_order_id = models.CharField(max_length=200, blank=True)
     razorpay_signature = models.CharField(max_length=500, blank=True)

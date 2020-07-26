@@ -27,6 +27,7 @@ router.register(r'business-detail', views.BusinessDetailViewset, basename='busin
 router.register(r'balancesheet', views.BalancesheetViewset, basename='balancesheet')
 
 urlpatterns = [
+    path('admin/doc/', include('django.contrib.admindocs.urls')),
     path('admin/', admin.site.urls),
     path('api/v1/', include(router.urls)),
     path('api/v1/generate_otp/', views.GenerateOTPView.as_view(), name='generate_otp'),
