@@ -39,9 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'corpmartapi.corpmart',
     'rest_framework',
     'rest_framework.authtoken',
+    'corpmartapi.corpmart',
 ]
 
 MIDDLEWARE = [
