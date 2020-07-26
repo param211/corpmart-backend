@@ -260,7 +260,7 @@ class BalancesheetViewset(viewsets.ReadOnlyModelViewSet):
         user = self.request.user
         balancesheet_id = self.request.query_params.get('balancesheet_id')
         b = Balancesheet.objects.get(pk=balancesheet_id)
-        bp = BalancesheetPayment.objects.get(balancesheet=b, user=user)
+        bp = BalancesheetPayment.objects.filter(balancesheet=b, user=user, payment_successful=True).first()
         has_paid = bp.payment_sucessful
 
         if has_paid:
