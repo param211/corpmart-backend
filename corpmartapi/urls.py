@@ -13,6 +13,8 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from corpmartapi.corpmart import views
@@ -35,3 +37,6 @@ urlpatterns = [
     path('api/v1/orderbalancesheet', views.OrderBalancesheet.as_view(), name="orderbalancesheet"),
     path('api/v1/successfulpayment', views.SuccessfulPayment.as_view(), name="successfulpayment")
 ]
+
+# temporary, to view file from
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

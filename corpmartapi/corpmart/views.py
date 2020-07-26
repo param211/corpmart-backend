@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate
 from django.core.mail import send_mail
 from rest_framework import permissions
+from rest_framework import filters
 from rest_framework import viewsets, views, generics
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
@@ -114,13 +115,64 @@ class PostBusiness(generics.CreateAPIView):
     """
     serializer_class = PostBusinessSerializer
 
+    def perform_create(self, serializer):
+        # The request user is set as author automatically.
+        serializer.save(admin_defined_selling_price=self.request.data.get('user_defined_selling_price'))
+
 
 class BusinessListViewset(viewsets.ReadOnlyModelViewSet):
     """
     Allows business list to be viewed and queried
     """
     serializer_class = BusinessListSerializer
-    queryset = Business.objects.all()
+    # For search
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['sale_description', 'company_type', 'sub_type', 'industry', 'state']
+
+    def get_queryset(self):
+        queryset = Business.objects.all()
+        state = self.request.query_params.get('state')
+        country = self.request.query_params.get('country')
+        company_type = self.request.query_params.get('company_type')
+        sub_type = self.request.query_params.get('sub_type')
+        industry = self.request.query_params.get('industry')
+        capital_max = self.request.query_params.get('capital_max')
+        capital_min = self.request.query_params.get('capital_min')
+        selling_price_max = self.request.query_params.get('selling_price_max')
+        selling_price_min = self.request.query_params.get('selling_price_min')
+        gst = self.request.query_params.get('gst')
+        bank = self.request.query_params.get('bank')
+        import_export_code = self.request.query_params.get('import_export_code')
+        balancesheet = self.request.query_params.get('balancesheet')
+
+        if state:
+            queryset = queryset.filter(state=state)
+        if company_type:
+            queryset = queryset.filter(company_type=company_type)
+        if country:
+            queryset = queryset.filter(country=country)
+        if sub_type:
+            queryset = queryset.filter(sub_type=sub_type)
+        if industry:
+            queryset = queryset.filter(industry=industry)
+        if capital_max:
+            queryset = queryset.filter(capital__lte=capital_max)
+        if capital_min:
+            queryset = queryset.filter(capital__gte=capital_min)
+        if selling_price_max:
+            queryset = queryset.filter(admin_defined_selling_price__lte=selling_price_max)
+        if selling_price_min:
+            queryset = queryset.filter(admin_defined_selling_price__gte=selling_price_min)
+        if gst:
+            queryset = queryset.filter(has_gst_number=gst)
+        if bank:
+            queryset = queryset.filter(has_bank_account=bank)
+        if import_export_code:
+            queryset = queryset.filter(has_import_export_code=import_export_code)
+        if balancesheet:
+            queryset = queryset.filter(balancesheets__isnull=False)
+
+        return queryset
 
 
 class BusinessDetailViewset(viewsets.ReadOnlyModelViewSet):
@@ -154,12 +206,13 @@ class OrderBalancesheet(APIView):
         order_currency = 'INR'
         notes = {'ordered_by': ordered_by}
 
-        response = client.order.create(amount=order_amount, currency=order_currency, notes=notes, payment_capture='1')
+        response = client.order.create(dict(amount=order_amount, currency=order_currency, notes=notes,
+                                            payment_capture='1'))
         order_id = response['id']
 
         if order_id:
             balancesheet = Balancesheet.objects.get(business__id=business_id)
-            b = BalancesheetPayment(balancesheet=balancesheet, user=user, order_id=order_id)
+            b = BalancesheetPayment(balancesheet=balancesheet, user=user, order_id=order_id, amount=order_amount)
             b.save()
             return Response({"order_id": order_id}, )
 
