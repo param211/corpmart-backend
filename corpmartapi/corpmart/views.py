@@ -1,4 +1,5 @@
 from random import randint
+import datetime as dt
 import requests
 from django.shortcuts import render
 from django.contrib.auth import authenticate
@@ -83,8 +84,15 @@ class LoginView(APIView):
 
         otp_object = OneTimePassword.objects.get(user=user)
         if otp_object.otp == otp:
-            token, created = Token.objects.get_or_create(user=user)
-            return Response({"token": token.key, "id": user.id, "mobile": user.mobile, "email": user.email},)
+            time_elapsed = dt.datetime.now(otp_object.updated_at.tzinfo) - otp_object.updated_at
+            otp_not_expired = time_elapsed.total_seconds() < 900
+            if otp_not_expired:
+                token, created = Token.objects.get_or_create(user=user)
+                return Response({"token": token.key, "id": user.id, "mobile": user.mobile, "email": user.email},)
+            else:
+                return Response({"error": "OTP expired. It is more than 15 minutes old."},
+                                status=status.HTTP_400_BAD_REQUEST)
+
         else:
             return Response({"error": "Wrong Credentials"}, status=status.HTTP_400_BAD_REQUEST)
 
