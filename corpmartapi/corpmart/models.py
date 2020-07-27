@@ -75,31 +75,112 @@ class OneTimePassword(models.Model):
 
 
 class Business(models.Model):
-    STATE_LIST = (
-        ('Assam', 'Assam'),
-        ('Delhi', 'Delhi'),
-    )
+    STATE_LIST = (("Andhra Pradesh","Andhra Pradesh"),
+                  ("Arunachal Pradesh ","Arunachal Pradesh "),
+                  ("Assam","Assam"),("Bihar","Bihar"),
+                  ("Chhattisgarh","Chhattisgarh"),
+                  ("Goa","Goa"),
+                  ("Gujarat","Gujarat"),
+                  ("Haryana","Haryana"),
+                  ("Himachal Pradesh","Himachal Pradesh"),
+                  ("Jammu and Kashmir ","Jammu and Kashmir "),
+                  ("Jharkhand","Jharkhand"),
+                  ("Karnataka","Karnataka"),
+                  ("Kerala","Kerala"),
+                  ("Madhya Pradesh","Madhya Pradesh"),
+                  ("Maharashtra","Maharashtra"),
+                  ("Manipur","Manipur"),
+                  ("Meghalaya","Meghalaya"),
+                  ("Mizoram","Mizoram"),
+                  ("Nagaland","Nagaland"),
+                  ("Odisha","Odisha"),
+                  ("Punjab","Punjab"),
+                  ("Rajasthan","Rajasthan"),
+                  ("Sikkim","Sikkim"),
+                  ("Tamil Nadu","Tamil Nadu"),
+                  ("Telangana","Telangana"),
+                  ("Tripura","Tripura"),
+                  ("Uttar Pradesh","Uttar Pradesh"),
+                  ("Uttarakhand","Uttarakhand"),
+                  ("West Bengal","West Bengal"),
+                  ("Andaman and Nicobar Islands","Andaman and Nicobar Islands"),
+                  ("Chandigarh","Chandigarh"),
+                  ("Dadra and Nagar Haveli","Dadra and Nagar Haveli"),
+                  ("Daman and Diu","Daman and Diu"),
+                  ("Lakshadweep","Lakshadweep"),
+                  ("National Capital Territory of Delhi","National Capital Territory of Delhi"),
+                  ("Puducherry","Puducherry"),
+                  ('Ladakh','Ladakh'),)
+
     COMPANY_TYPE_LIST = (
-        ('LTD', 'LTD'),
-        ('LLC', 'LLC'),
+        ('Pvt Ltd', 'Pvt Ltd'),
+        ('Limited Liability Partnership (LLP)', 'Limited Liability Partnership (LLP)'),
+        ('Partnership Firm', 'Partnership Firm'),
+        ('Trust/Society', 'Trust/Society'),
+        ('Others', 'Others'),
     )
     SUB_TYPE_LIST = (
-        ('LTD', 'LTD'),
-        ('LLC', 'LLC'),
+        ('One Person Company', 'One Person Company'),
+        ('Producer Company', 'Producer Company'),
+        ('Nidhi Company', 'Nidhi Company'),
+        ('Section-8 Company(NGO)', 'Section-8 Company(NGO)'),
+        ('Non-Banking Financial Company (NBFC)','Non-Banking Financial Company (NBFC)'),
+        ('Micro-Finance Company', 'Micro-Finance Company'),
+        ('Insurance Company', 'Insurance Company'),
+        ('Direct Selling Company', 'Direct Selling Company'),
+        ('Others', 'Others'),
     )
     INDUSTRY_LIST = (
-        ('TEXTILE', 'TEXTILE'),
+        ('AGRICULTURE AND ALLIED INDUSTRIES','AGRICULTURE AND ALLIED INDUSTRIES'),
+        ('AUTOMOBILES', 'AUTOMOBILES'),
+        ('AUTO COMPONENTS', 'AUTO COMPONENTS'),
+        ('AVIATION', 'AVIATION'),
+        ('BANKING', 'BANKING'),
+        ('CEMENT', 'CEMENT'),
+        ('CONSUMER DURABLES', 'CONSUMER DURABLES'),
+        ('ECOMMERCE', 'ECOMMERCE'),
+        ('EDUCATION AND TRAINING', 'EDUCATION AND TRAINING'),
+        ('ENGINEERING AND CAPITAL GOODS', 'ENGINEERING AND CAPITAL GOODS'),
+        ('FINANCIAL SERVICES', 'FINANCIAL SERVICES'),
+        ('FMCG', 'FMCG'),
+        ('GEMS AND JEWELLERY', 'GEMS AND JEWELLERY'),
+        ('HEALTHCARE', 'HEALTHCARE'),
+        ('INFRASTRUCTURE', 'INFRASTRUCTURE'),
+        ('INSURANCE', 'INSURANCE'),
+        ('IT & ITES', 'IT & ITES'),
+        ('MANUFACTURING', 'MANUFACTURING'),
+        ('MEDIA AND ENTERTAINMENT', 'MEDIA AND ENTERTAINMENT'),
+        ('METALS AND MINING', 'METALS AND MINING'),
+        ('OIL AND GAS', 'OIL AND GAS'),
+        ('PHARMACEUTICALS', 'PHARMACEUTICALS'),
+        ('PORTS', 'PORTS'),
+        ('POWER', 'POWER'),
+        ('RAILWAYS', 'RAILWAYS'),
+        ('REAL ESTATE', 'REAL ESTATE'),
+        ('RENEWABLE ENERGY', 'RENEWABLE ENERGY'),
+        ('RETAIL', 'RETAIL'),
+        ('ROADS', 'ROADS'),
+        ('SCIENCE AND TECHNOLOGY', 'SCIENCE AND TECHNOLOGY'),
+        ('SERVICES', 'SERVICES'),
         ('STEEL', 'STEEL'),
+        ('TELECOMMUNICATIONS', 'TELECOMMUNICATIONS'),
+        ('TEXTILES', 'TEXTILES'),
+        ('TOURISM AND HOSPITALITY', 'TOURISM AND HOSPITALITY'),
+        ('OTHERS', 'OTHERS')
+
     )
 
     is_verified = models.BooleanField(null=True)
     posted_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='businesses', on_delete=models.CASCADE)
     business_name = models.CharField(max_length=500)
-    state = models.CharField(max_length=100, choices=STATE_LIST, default='Assam')
+    state = models.CharField(max_length=100, choices=STATE_LIST, null=True, blank=True)
     country = models.CharField(max_length=100, default='India')
-    company_type = models.CharField(max_length=200, choices=COMPANY_TYPE_LIST, default='LTD')
-    sub_type = models.CharField(max_length=200, choices=SUB_TYPE_LIST, default='LTD')
-    industry = models.CharField(max_length=200, choices=INDUSTRY_LIST, default='TEXTILE')
+    company_type = models.CharField(max_length=200, choices=COMPANY_TYPE_LIST, null=True, blank=True)
+    company_type_others_description = models.CharField(max_length=500, blank=True, null=True)
+    sub_type = models.CharField(max_length=200, choices=SUB_TYPE_LIST, null=True, blank=True)
+    sub_type_others_description = models.CharField(max_length=500, blank=True, null=True)
+    industry = models.CharField(max_length=200, choices=INDUSTRY_LIST, null=True, blank=True)
+    industries_others_description = models.CharField(max_length=500, blank=True, null=True)
     sale_description = models.CharField(max_length=500, blank=True)
     year_of_incorporation = models.IntegerField(null=True, blank=True)
     has_gst_number = models.BooleanField(null=True)
