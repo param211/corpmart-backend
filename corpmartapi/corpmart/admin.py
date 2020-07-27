@@ -18,7 +18,7 @@ class CustomUserAdmin(UserAdmin):
     list_display = ('email', 'first_name', 'last_name', 'mobile')
     list_filter = ('email', 'mobile',)
     fieldsets = (
-        (None, {'fields': ('email', 'mobile', 'country_code', 'organisation_name')}),
+        (None, {'fields': ('email', 'mobile', 'first_name', 'last_name', 'country_code', 'organisation_name')}),
     )
     add_fieldsets = (
         (None, {
