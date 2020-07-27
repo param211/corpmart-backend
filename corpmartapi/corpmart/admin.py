@@ -48,8 +48,9 @@ class CustomBalancesheetPaymentAdmin(admin.ModelAdmin):
 class CustomBusinessAdmin(admin.ModelAdmin):
     list_display = ('id', 'business_name', 'posted_by', 'is_verified',)
     ordering = ('id',)
-    list_filter = ('is_verified', 'state','industry', 'company_type', 'sub_type')
-    search_fields = ('id', 'business_name')
+    list_filter = ('is_verified', 'state', 'industry', 'company_type', 'sub_type')
+    search_fields = ('id', 'business_name', 'state', 'company_type', 'company_type_others_description', 'sub_type',
+                     'sub_type_others_description', 'industry', 'industries_others_description')
 
 
 admin.site.register(User, CustomUserAdmin)

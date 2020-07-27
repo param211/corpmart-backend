@@ -50,8 +50,9 @@ class PostBusinessSerializer(serializers.ModelSerializer):
 class BusinessListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Business
-        fields = ['id', 'sale_description', 'company_type', 'sub_type', 'industry', 'state',
-                  'user_defined_selling_price', 'admin_defined_selling_price']
+        fields = ['id', 'sale_description', 'company_type', 'sub_type', 'sub_type_others_description', 'industry',
+                  'industries_others_description', 'state', 'capital', 'user_defined_selling_price',
+                  'admin_defined_selling_price']
 
 
 class BusinessDetailSerializer(serializers.ModelSerializer):
@@ -61,7 +62,8 @@ class BusinessDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Business
-        fields = ['id', 'sale_description', 'company_type', 'sub_type', 'industry', 'year_of_incorporation', 'state',
+        fields = ['id', 'sale_description', 'company_type', 'sub_type', 'sub_type_others_description', 'industry',
+                  'industries_others_description', 'year_of_incorporation', 'state',
                   'capital', 'user_defined_selling_price', 'admin_defined_selling_price', 'has_gst_number',
                   'has_bank_account', 'has_import_export_code', 'has_other_license', 'other_license',
                   'balancesheet_available', 'has_paid', 'balancesheet_id']

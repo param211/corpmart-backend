@@ -127,7 +127,8 @@ class BusinessListViewset(viewsets.ReadOnlyModelViewSet):
     serializer_class = BusinessListSerializer
     # For search
     filter_backends = [filters.SearchFilter]
-    search_fields = ['sale_description', 'company_type', 'sub_type', 'industry', 'state']
+    search_fields = ['sale_description', 'state', 'company_type', 'company_type_others_description', 'sub_type',
+                     'sub_type_others_description', 'industry', 'industries_others_description']
 
     def get_queryset(self):
         queryset = Business.objects.all()
