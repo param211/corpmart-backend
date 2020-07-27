@@ -116,8 +116,8 @@ class PostBusiness(generics.CreateAPIView):
     serializer_class = PostBusinessSerializer
 
     def perform_create(self, serializer):
-        # The request user is set as author automatically.
-        serializer.save(admin_defined_selling_price=self.request.data.get('user_defined_selling_price'))
+        serializer.save(admin_defined_selling_price=self.request.data.get('user_defined_selling_price'),
+                        is_verified=False)
 
 
 class BusinessListViewset(viewsets.ReadOnlyModelViewSet):
