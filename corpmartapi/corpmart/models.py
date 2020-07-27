@@ -195,6 +195,9 @@ class Business(models.Model):
     def __str__(self):
         return f"ID: {self.id} | NAME: {self.business_name}"
 
+    class Meta:
+        verbose_name_plural = 'Businesses'
+
 
 class Balancesheet(models.Model):
     business = models.OneToOneField(Business, related_name='balancesheets', on_delete=models.CASCADE)
