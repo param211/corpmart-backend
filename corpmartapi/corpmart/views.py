@@ -132,6 +132,7 @@ class BusinessListViewset(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         queryset = Business.objects.all()
+        queryset = queryset.filter(is_verified=True)
         state = self.request.query_params.get('state')
         country = self.request.query_params.get('country')
         company_type = self.request.query_params.get('company_type')
