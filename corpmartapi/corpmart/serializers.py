@@ -2,7 +2,7 @@ import datetime as dt
 import json
 from rest_framework import exceptions
 from rest_framework import serializers
-from .models import OneTimePassword, User, Business, ContactRequest, Balancesheet
+from .models import OneTimePassword, User, Business, ContactRequest, Balancesheet, ViewHistory
 from rest_framework.authtoken.models import Token
 
 
@@ -51,8 +51,7 @@ class BusinessListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Business
         fields = ['id', 'sale_description', 'company_type', 'sub_type', 'sub_type_others_description', 'industry',
-                  'industries_others_description', 'state', 'capital', 'user_defined_selling_price',
-                  'admin_defined_selling_price']
+                  'industries_others_description', 'state', 'capital', 'admin_defined_selling_price']
 
 
 class BusinessDetailSerializer(serializers.ModelSerializer):
@@ -65,25 +64,25 @@ class BusinessDetailSerializer(serializers.ModelSerializer):
         model = Business
         fields = ['id', 'sale_description', 'company_type', 'sub_type', 'sub_type_others_description', 'industry',
                   'industries_others_description', 'year_of_incorporation', 'state',
-                  'capital', 'user_defined_selling_price', 'admin_defined_selling_price', 'has_gst_number',
-                  'has_bank_account', 'has_import_export_code', 'has_other_license', 'other_license',
-                  'balancesheet_available', 'balancesheet_id', 'has_contacted']
+                  'capital', 'admin_defined_selling_price', 'has_gst_number',
+                  'has_bank_account', 'has_import_export_code', 'has_other_license', 'other_license', 'has_contacted',
+                  'balancesheet_available', 'balancesheet_id']
 
     @staticmethod
     def get_balancesheet_available(obj):
-        available = obj.balancesheets.file
-        if available is not None:
+        b = Balancesheet.objects.filter(business__id=obj.id).first()
+        if b is not None:
             return True
         else:
             return False
 
     def get_has_contacted(self, obj):
-        user = self.context['request'].usermultiple
+        user = self.context['request'].user
         contacted = ContactRequest.objects.filter(requested_by=user, business__id=obj.id).first()
         if contacted is not None:
             return True
         else:
-            return  False
+            return False
 
     # def get_has_paid(self, obj):
     #     user = self.context['request'].user
@@ -98,7 +97,7 @@ class BusinessDetailSerializer(serializers.ModelSerializer):
     #         return False
 
     def get_balancesheet_id(self, obj):
-        b = Balancesheet.objects.filter(business_id=obj.id).first()
+        b = Balancesheet.objects.filter(business__id=obj.id).first()
         if b is not None:
             return b.id
         else:
@@ -119,3 +118,12 @@ class BalancesheetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Balancesheet
         fields = ['file']
+
+
+class ViewHistorySerializer(serializers.ModelSerializer):
+    viewed_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    business = BusinessDetailSerializer
+
+    class Meta:
+        model = ViewHistory
+        fields = '__all__'

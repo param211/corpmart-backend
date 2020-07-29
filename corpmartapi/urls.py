@@ -25,6 +25,7 @@ router.register(r'user', views.UserViewSet, basename="user")
 router.register(r'business-list', views.BusinessListViewset, basename='business-list')
 router.register(r'business-detail', views.BusinessDetailViewset, basename='business-detail')
 router.register(r'balancesheet', views.BalancesheetViewset, basename='balancesheet')
+router.register(r'view-history', views.ViewHistoryViewset, basename='view-history')
 
 urlpatterns = [
     path('admin/doc/', include('django.contrib.admindocs.urls')),

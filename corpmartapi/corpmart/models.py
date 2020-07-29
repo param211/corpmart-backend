@@ -257,3 +257,9 @@ class ContactRequest(models.Model):
 
     def __str__(self):
         return f"Requested by -> {self.requested_by} || Business -> {self.business}"
+
+
+class ViewHistory(models.Model):
+    business = models.ForeignKey(Business, related_name='viewhistory', on_delete=models.CASCADE)
+    viewed_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='viewhistory', on_delete=models.CASCADE)
+    viewed_at = models.DateTimeField(auto_now_add=True)

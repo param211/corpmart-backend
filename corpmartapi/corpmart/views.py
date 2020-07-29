@@ -11,9 +11,9 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
-from .models import User, OneTimePassword, Business, Balancesheet
+from .models import User, OneTimePassword, Business, Balancesheet, ViewHistory
 from .serializers import UserSerializer, SignupSerializer, BusinessListSerializer, BusinessDetailSerializer, \
-    PostBusinessSerializer, ContactRequestSerializer, BalancesheetSerializer
+    PostBusinessSerializer, ContactRequestSerializer, BalancesheetSerializer, ViewHistorySerializer
 # Razorpay settings
 # import razorpay
 # client = razorpay.Client(auth=("rzp_test_IjDKOxNLcSy87u", "HbmWwNZELof6dfhRWm7jwKMZ"))
@@ -194,6 +194,17 @@ class BusinessDetailViewset(viewsets.ReadOnlyModelViewSet):
     serializer_class = BusinessDetailSerializer
     queryset = Business.objects.all()
 
+    def get_queryset(self):
+        user = self.request.user
+        business_id = self.request.query_params.get('business_id')
+        queryset = Business.objects.filter(id=business_id)
+
+        # updating view history
+        business = Business.objects.get(id=business_id)
+        viewhistory, created = ViewHistory.objects.get_or_create(viewed_by=user, business=business)
+
+        return queryset
+
 
 class ContactRequest(generics.CreateAPIView):
     """
@@ -277,5 +288,18 @@ class BalancesheetViewset(viewsets.ReadOnlyModelViewSet):
 
         # if has_paid:
         queryset = Balancesheet.objects.filter(id=balancesheet_id)
+
+        return queryset
+
+
+class ViewHistoryViewset(viewsets.ReadOnlyModelViewSet):
+    """
+    For viewing balancesheets
+    """
+    serializer_class = ViewHistorySerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = ViewHistory.objects.filter(viewed_by=user).order_by('-viewed_at')
 
         return queryset
