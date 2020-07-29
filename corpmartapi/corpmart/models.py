@@ -247,8 +247,10 @@ class ContactRequest(models.Model):
     requested_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='contactrequests', on_delete=models.CASCADE)
     business = models.ForeignKey(Business, related_name='contact_requests', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    handled = is_verified = models.BooleanField()
-    handled_by = models.CharField(max_length=30, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    processed = is_verified = models.BooleanField()
+    processed_by = models.CharField(max_length=30, blank=True)
+    status = models.CharField(max_length=200, blank=True)
 
     class Meta:
         unique_together = ("requested_by", "business")

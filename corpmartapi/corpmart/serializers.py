@@ -58,6 +58,7 @@ class BusinessListSerializer(serializers.ModelSerializer):
 class BusinessDetailSerializer(serializers.ModelSerializer):
     balancesheet_available = serializers.SerializerMethodField(read_only=True)
     balancesheet_id = serializers.SerializerMethodField(read_only=True)
+    has_contacted = serializers.SerializerMethodField(read_only=True)
     # has_paid = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
@@ -66,7 +67,7 @@ class BusinessDetailSerializer(serializers.ModelSerializer):
                   'industries_others_description', 'year_of_incorporation', 'state',
                   'capital', 'user_defined_selling_price', 'admin_defined_selling_price', 'has_gst_number',
                   'has_bank_account', 'has_import_export_code', 'has_other_license', 'other_license',
-                  'balancesheet_available', 'balancesheet_id']
+                  'balancesheet_available', 'balancesheet_id', 'has_contacted']
 
     @staticmethod
     def get_balancesheet_available(obj):
@@ -75,6 +76,14 @@ class BusinessDetailSerializer(serializers.ModelSerializer):
             return True
         else:
             return False
+
+    def get_has_contacted(self, obj):
+        user = self.context['request'].usermultiple
+        contacted = ContactRequest.objects.filter(requested_by=user, business__id=obj.id).first()
+        if contacted is not None:
+            return True
+        else:
+            return  False
 
     # def get_has_paid(self, obj):
     #     user = self.context['request'].user
