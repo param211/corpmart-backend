@@ -46,10 +46,17 @@ class CustomBalancesheetAdmin(admin.ModelAdmin):
 
 class CustomBusinessAdmin(admin.ModelAdmin):
     list_display = ('id', 'business_name', 'posted_by', 'is_verified',)
-    ordering = ('id',)
+    ordering = ('id', 'verified_by')
     list_filter = ('is_verified', 'state', 'industry', 'company_type', 'sub_type')
     search_fields = ('id', 'business_name', 'state', 'company_type', 'company_type_others_description', 'sub_type',
-                     'sub_type_others_description', 'industry', 'industries_others_description')
+                     'sub_type_others_description', 'industry', 'industries_others_description', 'verified_by')
+
+
+class CustomContactRequestAdmin(admin.ModelAdmin):
+    list_display = ('id', 'business', 'requested_by', 'created_at', 'processed', 'processed_by', 'status')
+    ordering = ('id', 'created_at')
+    list_filter = ('processed', 'business', 'requested_by', 'created_at', 'processed_by')
+    search_fields = ('id', 'business', 'requested_by', 'created_at', 'processed', 'processed_by', 'status')
 
 
 admin.site.register(User, CustomUserAdmin)
@@ -59,4 +66,4 @@ admin.site.register(Balancesheet, CustomBalancesheetAdmin)
 # admin.site.register(BalancesheetPayment, CustomBalancesheetPaymentAdmin)
 admin.site.register(Blog)
 admin.site.register(Testimonial)
-admin.site.register(ContactRequest)
+admin.site.register(ContactRequest, CustomContactRequestAdmin)
