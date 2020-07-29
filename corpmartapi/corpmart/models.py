@@ -138,6 +138,7 @@ class Business(models.Model):
         ('BANKING', 'BANKING'),
         ('CEMENT', 'CEMENT'),
         ('CONSUMER DURABLES', 'CONSUMER DURABLES'),
+        ('CONSULTING', 'CONSULTING'),
         ('ECOMMERCE', 'ECOMMERCE'),
         ('EDUCATION AND TRAINING', 'EDUCATION AND TRAINING'),
         ('ENGINEERING AND CAPITAL GOODS', 'ENGINEERING AND CAPITAL GOODS'),
@@ -165,6 +166,7 @@ class Business(models.Model):
         ('STEEL', 'STEEL'),
         ('TELECOMMUNICATIONS', 'TELECOMMUNICATIONS'),
         ('TEXTILES', 'TEXTILES'),
+        ('TRADING', 'TRADING'),
         ('TOURISM AND HOSPITALITY', 'TOURISM AND HOSPITALITY'),
         ('OTHERS', 'OTHERS')
 
