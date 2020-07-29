@@ -133,6 +133,8 @@ class BusinessListViewset(viewsets.ReadOnlyModelViewSet):
     Allows business list to be viewed and queried
     """
     serializer_class = BusinessListSerializer
+    permission_classes = ()
+
     # For search
     filter_backends = [filters.SearchFilter]
     search_fields = ['sale_description', 'state', 'company_type', 'company_type_others_description', 'sub_type',
