@@ -266,3 +266,6 @@ class ViewHistory(models.Model):
 
     class Meta:
         verbose_name_plural = 'ViewHistory'
+
+    def __str__(self):
+        return f"Viewed by -> {self.viewed_by} || Business -> {self.business}"
