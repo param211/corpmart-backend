@@ -1,5 +1,6 @@
 from random import randint
 import datetime as dt
+from django.db.models import Max
 import requests
 from django.shortcuts import render
 from django.contrib.auth import authenticate
@@ -303,3 +304,15 @@ class ViewHistoryViewset(viewsets.ReadOnlyModelViewSet):
         queryset = ViewHistory.objects.filter(viewed_by=user).order_by('-viewed_at')
 
         return queryset
+
+
+class MaxPriceView(APIView):
+    permission_classes = ()
+
+    def get(self, request,):
+        """
+        Return max price.
+        """
+        max_val = Business.objects.all().aggregate(
+            Max('admin_defined_selling_price'))['admin_defined_selling_price__max']
+        return Response(max_val)
