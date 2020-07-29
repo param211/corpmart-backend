@@ -173,6 +173,7 @@ class Business(models.Model):
     )
 
     is_verified = models.BooleanField()
+    verified_by = models.CharField(max_length=30, blank=True)
     posted_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='businesses', on_delete=models.CASCADE)
     business_name = models.CharField(max_length=500)
     state = models.CharField(max_length=100, choices=STATE_LIST, null=True, blank=True)
@@ -246,6 +247,8 @@ class ContactRequest(models.Model):
     requested_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='contactrequests', on_delete=models.CASCADE)
     business = models.ForeignKey(Business, related_name='contact_requests', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+    handled = is_verified = models.BooleanField()
+    handled_by = models.CharField(max_length=30, blank=True)
 
     class Meta:
         unique_together = ("requested_by", "business")
