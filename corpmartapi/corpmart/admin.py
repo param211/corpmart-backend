@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, OneTimePassword, Business, Balancesheet, BalancesheetPayment, Blog, Testimonial, \
-    ContactRequest
+from .models import User, OneTimePassword, Business, Balancesheet, Blog, Testimonial, ContactRequest
 from django.apps import apps
 from rest_framework.authtoken.models import Token
 
@@ -37,12 +36,12 @@ class CustomBalancesheetAdmin(admin.ModelAdmin):
     ordering = ('uploaded_on',)
 
 
-class CustomBalancesheetPaymentAdmin(admin.ModelAdmin):
-    list_display = ('transaction_id', 'balancesheet', 'user', 'amount', 'date', 'order_id',
-                    'payment_successful')
-    ordering = ('date', 'transaction_id')
-    search_fields = ('transaction_id', 'order_id')
-    list_filter = ('user', 'balancesheet',)
+# class CustomBalancesheetPaymentAdmin(admin.ModelAdmin):
+#     list_display = ('transaction_id', 'balancesheet', 'user', 'amount', 'date', 'order_id',
+#                     'payment_successful')
+#     ordering = ('date', 'transaction_id')
+#     search_fields = ('transaction_id', 'order_id')
+#     list_filter = ('user', 'balancesheet',)
 
 
 class CustomBusinessAdmin(admin.ModelAdmin):
@@ -57,7 +56,7 @@ admin.site.register(User, CustomUserAdmin)
 # admin.site.register(OneTimePassword)
 admin.site.register(Business, CustomBusinessAdmin)
 admin.site.register(Balancesheet, CustomBalancesheetAdmin)
-admin.site.register(BalancesheetPayment, CustomBalancesheetPaymentAdmin)
+# admin.site.register(BalancesheetPayment, CustomBalancesheetPaymentAdmin)
 admin.site.register(Blog)
 admin.site.register(Testimonial)
 admin.site.register(ContactRequest)

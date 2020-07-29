@@ -212,20 +212,20 @@ class Balancesheet(models.Model):
 
 
 # Model to keep track of balancesheet orders
-class BalancesheetPayment(models.Model):
-    # transaction_id will be created each time "buy" button is pressed
-    transaction_id = models.AutoField(primary_key=True)
-    balancesheet = models.ForeignKey(Balancesheet, related_name='balancesheetpayments', on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='balancesheetpayments', on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now_add=True)
-    amount = models.IntegerField()
-    # when order is created, the returned order_id is stored here
-    order_id = models.CharField(max_length=200, unique=True)
-    # the following field is available only on successfull payment
-    payment_successful = models.BooleanField(null=True)
-    razorpay_payment_id = models.CharField(max_length=200, blank=True)
-    razorpay_order_id = models.CharField(max_length=200, blank=True)
-    razorpay_signature = models.CharField(max_length=500, blank=True)
+# class BalancesheetPayment(models.Model):
+#     # transaction_id will be created each time "buy" button is pressed
+#     transaction_id = models.AutoField(primary_key=True)
+#     balancesheet = models.ForeignKey(Balancesheet, related_name='balancesheetpayments', on_delete=models.CASCADE)
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='balancesheetpayments', on_delete=models.CASCADE)
+#     date = models.DateTimeField(auto_now_add=True)
+#     amount = models.IntegerField()
+#     # when order is created, the returned order_id is stored here
+#     order_id = models.CharField(max_length=200, unique=True)
+#     # the following field is available only on successfull payment
+#     payment_successful = models.BooleanField(null=True)
+#     razorpay_payment_id = models.CharField(max_length=200, blank=True)
+#     razorpay_order_id = models.CharField(max_length=200, blank=True)
+#     razorpay_signature = models.CharField(max_length=500, blank=True)
 
 
 class Blog(models.Model):
