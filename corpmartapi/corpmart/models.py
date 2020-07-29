@@ -248,7 +248,7 @@ class ContactRequest(models.Model):
     business = models.ForeignKey(Business, related_name='contact_requests', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    processed = is_verified = models.BooleanField()
+    processed = models.BooleanField()
     processed_by = models.CharField(max_length=30, blank=True)
     status = models.CharField(max_length=200, blank=True)
 
