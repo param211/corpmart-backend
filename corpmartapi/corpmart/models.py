@@ -191,7 +191,8 @@ class Business(models.Model):
     has_bank_account = models.BooleanField(null=True)
     has_other_license = models.BooleanField(null=True)
     other_license = models.CharField(max_length=500, blank=True)
-    capital = models.IntegerField(null=True, blank=True)
+    authorised_capital = models.IntegerField(null=True, blank=True)
+    paidup_capital = models.IntegerField(null=True, blank=True)
     user_defined_selling_price = models.IntegerField(null=True, blank=True)
     admin_defined_selling_price = models.IntegerField(null=True, blank=True)
 

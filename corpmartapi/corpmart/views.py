@@ -149,8 +149,10 @@ class BusinessListViewset(viewsets.ReadOnlyModelViewSet):
         company_type = self.request.query_params.get('company_type')
         sub_type = self.request.query_params.get('sub_type')
         industry = self.request.query_params.get('industry')
-        capital_max = self.request.query_params.get('capital_max')
-        capital_min = self.request.query_params.get('capital_min')
+        authorised_capital_max = self.request.query_params.get('authorised_capital_max')
+        authorised_capital_min = self.request.query_params.get('authorised_capital_min')
+        paidup_capital_max = self.request.query_params.get('paidup_capital_max')
+        paidup_capital_min = self.request.query_params.get('paidup_capital_min')
         selling_price_max = self.request.query_params.get('selling_price_max')
         selling_price_min = self.request.query_params.get('selling_price_min')
         gst = self.request.query_params.get('gst')
@@ -168,10 +170,14 @@ class BusinessListViewset(viewsets.ReadOnlyModelViewSet):
             queryset = queryset.filter(sub_type=sub_type)
         if industry:
             queryset = queryset.filter(industry=industry)
-        if capital_max:
-            queryset = queryset.filter(capital__lte=capital_max)
-        if capital_min:
-            queryset = queryset.filter(capital__gte=capital_min)
+        if authorised_capital_max:
+            queryset = queryset.filter(capital__lte=authorised_capital_max)
+        if authorised_capital_min:
+            queryset = queryset.filter(capital__gte=authorised_capital_min)
+        if paidup_capital_max:
+            queryset = queryset.filter(capital__lte=paidup_capital_max)
+        if paidup_capital_min:
+            queryset = queryset.filter(capital__gte=paidup_capital_min)
         if selling_price_max:
             queryset = queryset.filter(admin_defined_selling_price__lte=selling_price_max)
         if selling_price_min:
