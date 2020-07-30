@@ -312,37 +312,19 @@ class ViewHistoryViewset(viewsets.ReadOnlyModelViewSet):
         return queryset
 
 
-class MaxSellingPriceView(APIView):
+class MaxValueView(APIView):
     permission_classes = ()
 
     def get(self, request,):
         """
-        Return max price.
+        Return max values.
         """
-        max_val = Business.objects.all().aggregate(
+        max_selling_price = Business.objects.all().aggregate(
             Max('admin_defined_selling_price'))['admin_defined_selling_price__max']
-        return Response(max_val)
-
-
-class MaxAuthCapitalView(APIView):
-    permission_classes = ()
-
-    def get(self, request,):
-        """
-        Return max price.
-        """
-        max_val = Business.objects.all().aggregate(
+        max_auth_capital = Business.objects.all().aggregate(
             Max('authorised_capital'))['authorised_capital__max']
-        return Response(max_val)
-
-
-class MaxPaidupCapitalView(APIView):
-    permission_classes = ()
-
-    def get(self, request,):
-        """
-        Return max price.
-        """
-        max_val = Business.objects.all().aggregate(
+        max_paidup_capital = Business.objects.all().aggregate(
             Max('paidup_capital'))['paidup_capital__max']
-        return Response(max_val)
+
+        return Response({"max_selling_price": max_selling_price, "max_auth_capital": max_auth_capital,
+                         "max_paidup_capital": max_paidup_capital}, )
