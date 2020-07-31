@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corpmartapi.corpmart',
     'corsheaders',
+    'django.contrib.postgres',
 ]
 
 MIDDLEWARE = [

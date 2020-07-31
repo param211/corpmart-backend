@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate
 from django.core.mail import send_mail
 from rest_framework import permissions
+from django.contrib.postgres.search import SearchQuery, SearchVector
 from rest_framework import filters
 from rest_framework import viewsets, views, generics
 from rest_framework.authtoken.models import Token
@@ -136,11 +137,6 @@ class BusinessListViewset(viewsets.ReadOnlyModelViewSet):
     serializer_class = BusinessListSerializer
     permission_classes = ()
 
-    # For search
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['sale_description', 'state', 'company_type', 'company_type_others_description', 'sub_type',
-                     'sub_type_others_description', 'industry', 'industries_others_description']
-
     def get_queryset(self):
         queryset = Business.objects.all()
         queryset = queryset.filter(is_verified=True)
@@ -159,6 +155,7 @@ class BusinessListViewset(viewsets.ReadOnlyModelViewSet):
         bank = self.request.query_params.get('bank')
         import_export_code = self.request.query_params.get('import_export_code')
         balancesheet = self.request.query_params.get('balancesheet')
+        search = self.request.query_params.get('search')
 
         if state:
             queryset = queryset.filter(state=state)
@@ -190,6 +187,10 @@ class BusinessListViewset(viewsets.ReadOnlyModelViewSet):
             queryset = queryset.filter(has_import_export_code=import_export_code)
         if balancesheet:
             queryset = queryset.filter(balancesheets__isnull=False)
+        if search:
+            queryset = queryset.annotate(
+                search=SearchVector('sale_description'),
+            ).filter(search=search)
 
         return queryset
 
