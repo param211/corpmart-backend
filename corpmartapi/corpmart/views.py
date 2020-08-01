@@ -161,13 +161,17 @@ class BusinessListViewset(viewsets.ReadOnlyModelViewSet):
             state = state.split(",")
             queryset = queryset.filter(state__in=state)
         if company_type:
-            queryset = queryset.filter(company_type=company_type)
+            company_type = company_type.split(",")
+            queryset = queryset.filter(company_type__in=company_type)
         if country:
-            queryset = queryset.filter(country=country)
+            country = country.split(",")
+            queryset = queryset.filter(country__in=country)
         if sub_type:
-            queryset = queryset.filter(sub_type=sub_type)
+            sub_type = sub_type.split(",")
+            queryset = queryset.filter(sub_type__in=sub_type)
         if industry:
-            queryset = queryset.filter(industry=industry)
+            industry = industry.split(",")
+            queryset = queryset.filter(industry__in=industry)
         if authorised_capital_max:
             queryset = queryset.filter(capital__lte=authorised_capital_max)
         if authorised_capital_min:
