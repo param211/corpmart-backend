@@ -158,63 +158,65 @@ class BusinessListViewset(viewsets.ReadOnlyModelViewSet):
         search = self.request.query_params.get('search')
         sort_by = self.request.query_params.get('sort_by')
 
-        if state:
+        if state is not None:
             state = state.split(",")
             queryset = queryset.filter(state__in=state)
-        if company_type:
+        if company_type is not None:
             company_type = company_type.split(",")
             queryset = queryset.filter(company_type__in=company_type)
-        if country:
+        if country is not None:
             country = country.split(",")
             queryset = queryset.filter(country__in=country)
-        if sub_type:
+        if sub_type is not None:
             sub_type = sub_type.split(",")
             queryset = queryset.filter(sub_type__in=sub_type)
-        if industry:
+        if industry is not None:
             industry = industry.split(",")
             queryset = queryset.filter(industry__in=industry)
-        if authorised_capital_max:
+        if authorised_capital_max is not None:
             queryset = queryset.filter(capital__lte=authorised_capital_max)
-        if authorised_capital_min:
+        if authorised_capital_min is not None:
             queryset = queryset.filter(capital__gte=authorised_capital_min)
-        if paidup_capital_max:
+        if paidup_capital_max is not None:
             queryset = queryset.filter(capital__lte=paidup_capital_max)
-        if paidup_capital_min:
+        if paidup_capital_min is not None:
             queryset = queryset.filter(capital__gte=paidup_capital_min)
-        if selling_price_max:
+        if selling_price_max is not None:
             queryset = queryset.filter(admin_defined_selling_price__lte=selling_price_max)
-        if selling_price_min:
+        if selling_price_min is not None:
             queryset = queryset.filter(admin_defined_selling_price__gte=selling_price_min)
-        if gst:
+        if gst is not None:
             queryset = queryset.filter(has_gst_number=gst)
-        if bank:
+        if bank is not None:
             queryset = queryset.filter(has_bank_account=bank)
-        if import_export_code:
+        if import_export_code is not None:
             queryset = queryset.filter(has_import_export_code=import_export_code)
-        if balancesheet:
+        if balancesheet is not None:
             queryset = queryset.filter(balancesheets__isnull=False)
-        if search:
+        if search is not None:
             queryset = queryset.annotate(
                 search=SearchVector('sale_description'),
             ).filter(search=search)
-        if sort_by == 1:
-            # latest first
-            queryset = queryset.order_by('-year_of_incorporation')
-        if sort_by == 2:
-            queryset = queryset.order_by('year_of_incorporation')
-        if sort_by == 3:
-            # ascending
-            queryset = queryset.order_by('authorised_capital')
-        if sort_by == 4:
-            queryset = queryset.order_by('-authorised_capital')
-        if sort_by == 5:
-            queryset = queryset.order_by('paidup_capital')
-        if sort_by == 6:
-            queryset = queryset.order_by('-paidup_capital')
-        if sort_by == 7:
-            queryset = queryset.order_by('admin_defined_selling_price')
-        if sort_by == 8:
-            queryset = queryset.order_by('-admin_defined_selling_price')
+        if sort_by is not None:
+            if sort_by == 1:
+                # latest first
+                queryset = queryset.order_by('-year_of_incorporation')
+            elif sort_by == 2:
+                queryset = queryset.order_by('year_of_incorporation')
+            elif sort_by == 3:
+                # ascending
+                queryset = queryset.order_by('authorised_capital')
+            elif sort_by == 4:
+                queryset = queryset.order_by('-authorised_capital')
+            elif sort_by == 5:
+                queryset = queryset.order_by('paidup_capital')
+            elif sort_by == 6:
+                queryset = queryset.order_by('-paidup_capital')
+            elif sort_by == 7:
+                queryset = queryset.order_by('admin_defined_selling_price')
+            elif sort_by == 8:
+                queryset = queryset.order_by('-admin_defined_selling_price')
+
         return queryset
 
 
