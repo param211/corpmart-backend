@@ -198,7 +198,7 @@ class BusinessListViewset(viewsets.ReadOnlyModelViewSet):
                 search=SearchVector('sale_description'),
             ).filter(search=search)
         if sort_by is not None:
-            if sort_by == 1:
+            if sort_by == "1":
                 # latest first
                 queryset = queryset.order_by('-year_of_incorporation')
             elif sort_by == 2:
