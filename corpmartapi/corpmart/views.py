@@ -156,6 +156,7 @@ class BusinessListViewset(viewsets.ReadOnlyModelViewSet):
         import_export_code = self.request.query_params.get('import_export_code')
         balancesheet = self.request.query_params.get('balancesheet')
         search = self.request.query_params.get('search')
+        sort_by = self.request.query_params.get('sort_by')
 
         if state:
             state = state.split(",")
@@ -196,7 +197,24 @@ class BusinessListViewset(viewsets.ReadOnlyModelViewSet):
             queryset = queryset.annotate(
                 search=SearchVector('sale_description'),
             ).filter(search=search)
-
+        if sort_by == 1:
+            # latest first
+            queryset = queryset.order_by('-year_of_incorporation')
+        if sort_by == 2:
+            queryset = queryset.order_by('year_of_incorporation')
+        if sort_by == 3:
+            # ascending
+            queryset = queryset.order_by('authorised_capital')
+        if sort_by == 4:
+            queryset = queryset.order_by('-authorised_capital')
+        if sort_by == 5:
+            queryset = queryset.order_by('paidup_capital')
+        if sort_by == 6:
+            queryset = queryset.order_by('-paidup_capital')
+        if sort_by == 7:
+            queryset = queryset.order_by('admin_defined_selling_price')
+        if sort_by == 8:
+            queryset = queryset.order_by('-admin_defined_selling_price')
         return queryset
 
 
