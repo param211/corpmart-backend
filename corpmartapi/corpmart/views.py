@@ -201,22 +201,20 @@ class BusinessListViewset(viewsets.ReadOnlyModelViewSet):
             if sort_by == "1":
                 # latest first
                 queryset = queryset.order_by('-year_of_incorporation')
-            elif sort_by == 2:
+            elif sort_by == "2":
                 queryset = queryset.order_by('year_of_incorporation')
-            elif sort_by == 3:
+            elif sort_by == "3":
                 # ascending
                 queryset = queryset.order_by('authorised_capital')
-            elif sort_by == 9:
-                queryset = Business.objects.none()
-            elif sort_by == 4:
+            elif sort_by == "4":
                 queryset = queryset.order_by('-authorised_capital')
-            elif sort_by == 5:
+            elif sort_by == "5":
                 queryset = queryset.order_by('paidup_capital')
-            elif sort_by == 6:
+            elif sort_by == "6":
                 queryset = queryset.order_by('-paidup_capital')
-            elif sort_by == 7:
+            elif sort_by == "7":
                 queryset = queryset.order_by('admin_defined_selling_price')
-            elif sort_by == 8:
+            elif sort_by == "8":
                 queryset = queryset.order_by('-admin_defined_selling_price')
 
         return queryset
