@@ -206,6 +206,8 @@ class BusinessListViewset(viewsets.ReadOnlyModelViewSet):
             elif sort_by == 3:
                 # ascending
                 queryset = queryset.order_by('authorised_capital')
+            elif sort_by == 9:
+                queryset = Business.objects.none()
             elif sort_by == 4:
                 queryset = queryset.order_by('-authorised_capital')
             elif sort_by == 5:
