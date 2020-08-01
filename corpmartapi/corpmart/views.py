@@ -158,7 +158,8 @@ class BusinessListViewset(viewsets.ReadOnlyModelViewSet):
         search = self.request.query_params.get('search')
 
         if state:
-            queryset = queryset.filter(state=state)
+            state = state.split(",")
+            queryset = queryset.filter(state__in=state)
         if company_type:
             queryset = queryset.filter(company_type=company_type)
         if country:
