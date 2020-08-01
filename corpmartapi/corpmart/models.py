@@ -76,14 +76,14 @@ class OneTimePassword(models.Model):
 
 class Business(models.Model):
     STATE_LIST = (("Andhra Pradesh","Andhra Pradesh"),
-                  ("Arunachal Pradesh ","Arunachal Pradesh "),
+                  ("Arunachal Pradesh","Arunachal Pradesh"),
                   ("Assam","Assam"),("Bihar","Bihar"),
                   ("Chhattisgarh","Chhattisgarh"),
                   ("Goa","Goa"),
                   ("Gujarat","Gujarat"),
                   ("Haryana","Haryana"),
                   ("Himachal Pradesh","Himachal Pradesh"),
-                  ("Jammu and Kashmir ","Jammu and Kashmir "),
+                  ("Jammu and Kashmir","Jammu and Kashmir"),
                   ("Jharkhand","Jharkhand"),
                   ("Karnataka","Karnataka"),
                   ("Kerala","Kerala"),
