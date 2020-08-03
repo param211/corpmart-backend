@@ -174,13 +174,13 @@ class BusinessListViewset(viewsets.ReadOnlyModelViewSet):
             industry = industry.split(",")
             queryset = queryset.filter(industry__in=industry)
         if authorised_capital_max is not None:
-            queryset = queryset.filter(capital__lte=authorised_capital_max)
+            queryset = queryset.filter(authorised_capital__lte=authorised_capital_max)
         if authorised_capital_min is not None:
-            queryset = queryset.filter(capital__gte=authorised_capital_min)
+            queryset = queryset.filter(authorised_capital__gte=authorised_capital_min)
         if paidup_capital_max is not None:
-            queryset = queryset.filter(capital__lte=paidup_capital_max)
+            queryset = queryset.filter(paidup_capital__lte=paidup_capital_max)
         if paidup_capital_min is not None:
-            queryset = queryset.filter(capital__gte=paidup_capital_min)
+            queryset = queryset.filter(paidup_capital__gte=paidup_capital_min)
         if selling_price_max is not None:
             queryset = queryset.filter(admin_defined_selling_price__lte=selling_price_max)
         if selling_price_min is not None:
