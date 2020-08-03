@@ -104,6 +104,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     Allow users to be viewed, get by ?user_id, user_ mobile and user_email
     """
     serializer_class = UserSerializer
+    pagination_class = None
 
     def get_queryset(self):
         user_id = self.request.query_params.get('user_id')
@@ -225,6 +226,7 @@ class BusinessDetailViewset(viewsets.ReadOnlyModelViewSet):
     Allows business detail to be viewed
     """
     serializer_class = BusinessDetailSerializer
+    pagination_class = None
     queryset = Business.objects.all()
 
     def get_queryset(self):
@@ -310,6 +312,7 @@ class BalancesheetViewset(viewsets.ReadOnlyModelViewSet):
     For viewing balancesheets
     """
     serializer_class = BalancesheetSerializer
+    pagination_class = None
 
     def get_queryset(self):
         # queryset = Balancesheet.objects.none()
@@ -330,6 +333,7 @@ class ViewHistoryViewset(viewsets.ReadOnlyModelViewSet):
     For viewing balancesheets
     """
     serializer_class = ViewHistorySerializer
+    pagination_class = None
 
     def get_queryset(self):
         user = self.request.user
