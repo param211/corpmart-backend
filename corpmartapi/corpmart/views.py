@@ -373,3 +373,19 @@ class MaxValueView(APIView):
 
         return Response({"max_selling_price": max_selling_price, "max_auth_capital": max_auth_capital,
                          "max_paidup_capital": max_paidup_capital}, )
+
+
+class ValidateTokenViewset(viewsets.ReadOnlyModelViewSet):
+    """
+        For validating token
+        """
+    serializer_class = BusinessListSerializer
+    pagination_class = None
+
+    def get_queryset(self):
+        user = self.request.user
+
+        if user is not None:
+            return True
+        else:
+            return False
