@@ -27,7 +27,6 @@ router.register(r'business-detail', views.BusinessDetailViewset, basename='busin
 router.register(r'balancesheet', views.BalancesheetViewset, basename='balancesheet')
 router.register(r'view-history', views.ViewHistoryViewset, basename='view-history')
 router.register(r'user-business', views.UserBusinessViewset, basename='user-business')
-router.register(r'validate-token', views.ValidateTokenViewset, basename='validate-token')
 
 urlpatterns = [
     path('admin/doc/', include('django.contrib.admindocs.urls')),
@@ -39,6 +38,7 @@ urlpatterns = [
     path('api/v1/post-business', views.PostBusiness.as_view(), name="post-business"),
     path('api/v1/contact-request', views.ContactRequest.as_view(), name="contact-request"),
     path('api/v1/max-value', views.MaxValueView.as_view(), name="max-value"),
+    path('api/v1/validate-token', views.ValidateTokenView.as_view(), name="validate-token"),
     # path('api/v1/orderbalancesheet', views.OrderBalancesheet.as_view(), name="orderbalancesheet"),
     # path('api/v1/successfulpayment', views.SuccessfulPayment.as_view(), name="successfulpayment")
 ]

@@ -375,17 +375,7 @@ class MaxValueView(APIView):
                          "max_paidup_capital": max_paidup_capital}, )
 
 
-class ValidateTokenViewset(viewsets.ReadOnlyModelViewSet):
-    """
-        For validating token
-        """
-    serializer_class = BusinessListSerializer
-    pagination_class = None
+class ValidateTokenView(APIView):
 
-    def get_queryset(self):
-        user = self.request.user
-
-        if user is not None:
-            return True
-        else:
-            return False
+    def get(self):
+        return Response({"Exists": True}, )
