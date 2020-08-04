@@ -34,10 +34,12 @@ class GenerateOTPView(APIView):
     def post(self, request, ):
         email = request.data.get("email")
         mobile = request.data.get("mobile")
-        if email:
+        if email is not None:
             user = User.objects.get(email=email)
-        elif mobile:
+        elif mobile is not None:
             user = User.objects.get(mobile=mobile)
+        else:
+            return Response({"provide_user_creds"}, )
 
         random_otp = randint(10000, 99999)
 
