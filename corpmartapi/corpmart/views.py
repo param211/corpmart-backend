@@ -90,7 +90,7 @@ class LoginView(APIView):
             otp_not_expired = time_elapsed.total_seconds() < 900
             if otp_not_expired:
                 token, created = Token.objects.get_or_create(user=user)
-                return Response({"token": token.key, "id": user.id, "mobile": user.mobile, "email": user.email},)
+                return Response({"token": token.key},)
             else:
                 return Response({"error": "OTP expired. It is more than 15 minutes old."},
                                 status=status.HTTP_400_BAD_REQUEST)
@@ -226,6 +226,7 @@ class BusinessDetailViewset(viewsets.ReadOnlyModelViewSet):
     Allows business detail to be viewed
     """
     serializer_class = BusinessDetailSerializer
+    permission_classes = ()
     pagination_class = None
     queryset = Business.objects.all()
 
@@ -338,6 +339,20 @@ class ViewHistoryViewset(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         user = self.request.user
         queryset = ViewHistory.objects.filter(viewed_by=user).order_by('-viewed_at')
+
+        return queryset
+
+
+class UserBusinessViewset(viewsets.ReadOnlyModelViewSet):
+    """
+    For viewing balancesheets
+    """
+    serializer_class = BusinessListSerializer
+    pagination_class = None
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Business.objects.filter(posted_by=user).order_by('-year_of_incorporation')
 
         return queryset
 
