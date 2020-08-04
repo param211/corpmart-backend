@@ -377,5 +377,5 @@ class MaxValueView(APIView):
 
 class ValidateTokenView(APIView):
 
-    def get(self):
+    def get(self, request,):
         return Response({"Exists": True}, )
