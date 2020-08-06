@@ -134,4 +134,4 @@ class ViewHistorySerializer(serializers.ModelSerializer):
 class ChatbotRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChatbotRequest
-        fielda = ['name', 'email', 'mobile', 'query']
+        fields = ['name', 'email', 'mobile', 'query']
