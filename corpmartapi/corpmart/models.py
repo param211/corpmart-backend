@@ -249,7 +249,7 @@ class ContactRequest(models.Model):
     business = models.ForeignKey(Business, related_name='contact_requests', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    processed = models.BooleanField()
+    processed = models.BooleanField(default=False)
     processed_by = models.CharField(max_length=30, blank=True)
     status = models.CharField(max_length=200, blank=True)
 
@@ -279,7 +279,7 @@ class ChatbotRequest(models.Model):
     query = models.CharField(max_length=5000)
     # Following for admin
     created_at = models.DateTimeField(auto_now_add=True)
-    processed = models.BooleanField()
+    processed = models.BooleanField(default=False)
     processed_by = models.CharField(max_length=30, blank=True)
     status = models.CharField(max_length=200, blank=True)
 
