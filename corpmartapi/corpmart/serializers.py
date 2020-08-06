@@ -2,7 +2,7 @@ import datetime as dt
 import json
 from rest_framework import exceptions
 from rest_framework import serializers
-from .models import OneTimePassword, User, Business, ContactRequest, Balancesheet, ViewHistory
+from .models import OneTimePassword, User, Business, ContactRequest, Balancesheet, ViewHistory, ChatbotRequest
 from rest_framework.authtoken.models import Token
 
 
@@ -129,3 +129,9 @@ class ViewHistorySerializer(serializers.ModelSerializer):
         model = ViewHistory
         fields = '__all__'
         depth = 1
+
+
+class ChatbotRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ChatbotRequest
+        fielda = ['name', 'email', 'mobile', 'query']

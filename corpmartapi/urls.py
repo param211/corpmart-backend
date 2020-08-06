@@ -37,6 +37,7 @@ urlpatterns = [
     path('api/v1/signup/', views.SignupView.as_view(), name="signup"),
     path('api/v1/post-business', views.PostBusiness.as_view(), name="post-business"),
     path('api/v1/contact-request', views.ContactRequest.as_view(), name="contact-request"),
+    path('api/v1/chatbot-request', views.ChatbotRequest.as_view(), name="chatbot-request"),
     path('api/v1/max-value', views.MaxValueView.as_view(), name="max-value"),
     path('api/v1/validate-token', views.ValidateTokenView.as_view(), name="validate-token"),
     # path('api/v1/orderbalancesheet', views.OrderBalancesheet.as_view(), name="orderbalancesheet"),

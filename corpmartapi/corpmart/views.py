@@ -15,7 +15,8 @@ from rest_framework import status
 from rest_framework.views import APIView
 from .models import User, OneTimePassword, Business, Balancesheet, ViewHistory
 from .serializers import UserSerializer, SignupSerializer, BusinessListSerializer, BusinessDetailSerializer, \
-    PostBusinessSerializer, ContactRequestSerializer, BalancesheetSerializer, ViewHistorySerializer
+    PostBusinessSerializer, ContactRequestSerializer, BalancesheetSerializer, ViewHistorySerializer,\
+    ChatbotRequestSerializer
 # Razorpay settings
 # import razorpay
 # client = razorpay.Client(auth=("rzp_test_IjDKOxNLcSy87u", "HbmWwNZELof6dfhRWm7jwKMZ"))
@@ -383,3 +384,12 @@ class ValidateTokenView(APIView):
         user = request.user
         return Response({"first_name": user.first_name, "last_name": user.last_name, "email": user.email,
                          "mobile": user.mobile, "organisation_name": user.organisation_name}, )
+
+
+class ChatbotRequest(generics.CreateAPIView):
+    """
+    Allows to post chatbot requests
+    """
+    # TODO: send sms/email to admin
+    serializer_class = ChatbotRequestSerializer
+

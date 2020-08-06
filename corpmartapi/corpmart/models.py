@@ -270,3 +270,18 @@ class ViewHistory(models.Model):
 
     def __str__(self):
         return f"Viewed by -> {self.viewed_by} || Business -> {self.business}"
+
+
+class ChatbotRequest(models.Model):
+    name = models.CharField(max_length=100)
+    mobile = models.BigIntegerField(blank=True)
+    email = models.EmailField(blank=True)
+    query = models.CharField(max_length=5000)
+    # Following for admin
+    created_at = models.DateTimeField(auto_now_add=True)
+    processed = models.BooleanField()
+    processed_by = models.CharField(max_length=30, blank=True)
+    status = models.CharField(max_length=200, blank=True)
+
+    def __str__(self):
+        return f"Requested by -> {self.name} || Mobile -> {self.mobile} || Email -> {self.email}"

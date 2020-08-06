@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, OneTimePassword, Business, Balancesheet, Blog, Testimonial, ContactRequest, ViewHistory
+from .models import User, OneTimePassword, Business, Balancesheet, Blog, Testimonial, ContactRequest, ViewHistory,\
+    ChatbotRequest
 from django.apps import apps
 from rest_framework.authtoken.models import Token
 
@@ -59,6 +60,12 @@ class CustomContactRequestAdmin(admin.ModelAdmin):
     search_fields = ('id', 'business', 'requested_by', 'created_at', 'processed', 'processed_by', 'status')
 
 
+class CustomChatbotRequestAdmin(admin.ModelAdmin):
+    ordering = ('id', 'created_at')
+    list_filter = ('processed', 'created_at', 'processed_by')
+    search_fields = ('id', 'name', 'email', 'mobile', 'processed', 'processed_by', 'status')
+
+
 admin.site.register(User, CustomUserAdmin)
 # admin.site.register(OneTimePassword)
 admin.site.register(Business, CustomBusinessAdmin)
@@ -67,4 +74,5 @@ admin.site.register(Balancesheet, CustomBalancesheetAdmin)
 admin.site.register(Blog)
 admin.site.register(Testimonial)
 admin.site.register(ContactRequest, CustomContactRequestAdmin)
+admin.site.register(ChatbotRequest, CustomChatbotRequestAdmin)
 admin.site.register(ViewHistory)
