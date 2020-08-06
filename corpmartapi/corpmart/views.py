@@ -380,4 +380,6 @@ class MaxValueView(APIView):
 class ValidateTokenView(APIView):
 
     def get(self, request,):
-        return Response({"Exists": True}, )
+        user = request.user
+        return Response({"first_name": user.first_name, "last_name": user.last_name, "email": user.email,
+                         "mobile": user.mobile, "organisation_name": user.organisation_name}, )
