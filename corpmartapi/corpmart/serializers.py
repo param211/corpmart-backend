@@ -43,7 +43,7 @@ class PostBusinessSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Business
-        exclude = ['is_verified', 'admin_defined_selling_price']
+        exclude = ['is_verified', 'admin_defined_selling_price', 'verified_by']
 
 
 # Used for listing the businesses
