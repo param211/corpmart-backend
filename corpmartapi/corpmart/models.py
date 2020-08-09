@@ -113,7 +113,7 @@ class Business(models.Model):
                   ('Ladakh','Ladakh'),)
 
     COMPANY_TYPE_LIST = (
-        ('Pvt Ltd', 'Pvt Ltd'),
+        ('Pvt. Ltd.', 'Pvt. Ltd.'),
         ('Limited Liability Partnership (LLP)', 'Limited Liability Partnership (LLP)'),
         ('Partnership Firm', 'Partnership Firm'),
         ('Trust/Society', 'Trust/Society'),
