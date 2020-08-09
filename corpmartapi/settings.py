@@ -52,7 +52,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -98,13 +98,82 @@ WSGI_APPLICATION = 'corpmartapi.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
+# -------------------------------------------------------------------
+# https://github.com/GoogleCloudPlatform/python-docs-samples/blob/master/appengine/flexible/django_cloudsql/mysite/settings.py
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+PROJECT_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir)
+
+# [START db_setup]
+if os.getenv('GAE_APPLICATION', None):
+    # Running on production App Engine, so connect to Google Cloud SQL using
+    # the unix socket at /cloudsql/<your-cloudsql-connection string>
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'HOST': '/cloudsql/corpmart:asia-south1:cmdb',
+            'USER': 'admin',
+            'PASSWORD': 'corpmart3463dfh@1245',
+            'NAME': 'db1',
+        }
     }
-}
+
+    # https://medium.com/@umeshsaruk/upload-to-google-cloud-storage-using-django-storages-72ddec2f0d05
+    DEFAULT_FILE_STORAGE = 'gcloud.GoogleCloudMediaFileStorage'
+    STATICFILES_STORAGE = 'gcloud.GoogleCloudStaticFileStorage'
+
+    GS_PROJECT_ID = 'corpmart'
+    GS_STATIC_BUCKET_NAME = 'corpmartstorage'
+    GS_MEDIA_BUCKET_NAME = 'corpmartstorage'  # same as STATIC BUCKET if using single bucket both for static and media
+
+    STATIC_URL1 = 'https://storage.googleapis.com/{}/'.format(GS_STATIC_BUCKET_NAME)
+    STATIC_URL = '/static/'
+    STATIC_ROOT = "static/"
+
+    MEDIA_URL = 'https://storage.googleapis.com/{}/'.format(GS_MEDIA_BUCKET_NAME)
+    MEDIA_ROOT = "media/"
+
+    UPLOAD_ROOT = 'media/uploads/'
+
+    DOWNLOAD_ROOT = os.path.join(PROJECT_ROOT, "static/media/downloads")
+    DOWNLOAD_URL = STATIC_URL1 + "media/downloads"
+else:
+    # Running locally so connect to either a local MySQL instance or connect
+    # to Cloud SQL via the proxy.  To start the proxy via command line:
+    #    $ cloud_sql_proxy -instances=[INSTANCE_CONNECTION_NAME]=tcp:3306
+    # See https://cloud.google.com/sql/docs/mysql-connect-proxy
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'HOST': '127.0.0.1',
+            'PORT': '3306',
+            'NAME': 'db1',
+            'USER': 'admin',
+            'PASSWORD': 'corpmart3463dfh@1245',
+        }
+    }
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+
+    STATIC_ROOT = 'static/'
+    STATIC_URL = '/static/'
+
+    MEDIA_ROOT = 'media'
+    MEDIA_URL = 'media/'
+
+    UPLOAD_ROOT = 'uploads/'
+
+    DOWNLOAD_URL = STATIC_URL + "media/downloads"
+    DOWNLOAD_ROOT = os.path.join(PROJECT_ROOT, "static/media/downloads")
+# [END db_setup]
+
+# Use a in-memory sqlite3 database when testing in CI systems
+if os.getenv('TRAMPOLINE_CI', None):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3')
+        }
+    }
+# -------------------------------------------------------------
 
 
 # setting the defaullt user model, for auth
@@ -147,11 +216,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 # The absolute path to the directory where collectstatic will collect static files for deployment.
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-STATIC_URL = '/static/'
-MEDIA_URL =  '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+#
+# STATIC_URL = '/static/'
+# MEDIA_URL =  '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Twilio SendGrid
 EMAIL_HOST = 'smtp.sendgrid.net'
@@ -162,15 +231,15 @@ EMAIL_HOST_PASSWORD = 'SG.y6VpIrwoSiib13pVxUd1GA.J5VfynmNcUuyCWBNBhG78xSql1v7vIC
 
 
 # Heroku: Update database configuration from $DATABASE_URL.
-import dj_database_url
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
+# import dj_database_url
+# db_from_env = dj_database_url.config(conn_max_age=500)
+# DATABASES['default'].update(db_from_env)
 
 
 # psycopg2-binary==2.7.7
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 CORS_ORIGIN_ALLOW_ALL = True # If this is used then `CORS_ORIGIN_WHITELIST` will not have any effect
