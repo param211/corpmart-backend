@@ -240,7 +240,9 @@ class BusinessDetailViewset(viewsets.ReadOnlyModelViewSet):
 
         # updating view history
         business = Business.objects.get(id=business_id)
-        viewhistory, created = ViewHistory.objects.get_or_create(viewed_by=user, business=business)
+
+        if user is not None:
+            viewhistory, created = ViewHistory.objects.get_or_create(viewed_by=user, business=business)
 
         return queryset
 
