@@ -234,14 +234,15 @@ class BusinessDetailViewset(viewsets.ReadOnlyModelViewSet):
     queryset = Business.objects.all()
 
     def get_queryset(self):
-        user = self.request.user
+
         business_id = self.request.query_params.get('business_id')
         queryset = Business.objects.filter(id=business_id)
 
         # updating view history
         business = Business.objects.get(id=business_id)
 
-        if user is not None:
+        if self.request.user.is_authenticated:
+            user = self.request.user
             viewhistory, created = ViewHistory.objects.get_or_create(viewed_by=user, business=business)
 
         return queryset
