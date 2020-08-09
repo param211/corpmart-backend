@@ -4,7 +4,7 @@ from rest_framework import exceptions
 from rest_framework import serializers
 from .models import OneTimePassword, User, Business, ContactRequest, Balancesheet, ViewHistory, ChatbotRequest
 from rest_framework.authtoken.models import Token
-
+from django.core.exceptions import ObjectDoesNotExist
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -78,8 +78,16 @@ class BusinessDetailSerializer(serializers.ModelSerializer):
             return False
 
     def get_has_contacted(self, obj):
-        user = self.context['request'].user
-        contacted = ContactRequest.objects.filter(requested_by=user, business__id=obj.id).first()
+        # contacted = None
+        try:
+            if self.context['request'].user.is_authenticated:
+                user = self.context['request'].user
+                contacted = ContactRequest.objects.filter(requested_by=user, business__id=obj.id).first()
+            else:
+                contacted = None
+        except ObjectDoesNotExist:
+            return False
+
         if contacted is not None:
             return True
         else:

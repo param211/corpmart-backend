@@ -17,6 +17,7 @@ from .models import User, OneTimePassword, Business, Balancesheet, ViewHistory
 from .serializers import UserSerializer, SignupSerializer, BusinessListSerializer, BusinessDetailSerializer, \
     PostBusinessSerializer, ContactRequestSerializer, BalancesheetSerializer, ViewHistorySerializer,\
     ChatbotRequestSerializer
+from django.core.exceptions import ObjectDoesNotExist
 # Razorpay settings
 # import razorpay
 # client = razorpay.Client(auth=("rzp_test_IjDKOxNLcSy87u", "HbmWwNZELof6dfhRWm7jwKMZ"))
@@ -243,7 +244,10 @@ class BusinessDetailViewset(viewsets.ReadOnlyModelViewSet):
 
         if self.request.user.is_authenticated:
             user = self.request.user
-            viewhistory, created = ViewHistory.objects.get_or_create(viewed_by=user, business=business)
+            try:
+                viewhistory, created = ViewHistory.objects.get_or_create(viewed_by=user, business=business)
+            except ObjectDoesNotExist:
+                pass
 
         return queryset
 
