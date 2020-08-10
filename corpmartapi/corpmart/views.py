@@ -51,9 +51,14 @@ class GenerateOTPView(APIView):
                 defaults={'otp': random_otp},
             )
             # # For Email-------------------------------------------------------------------------------------------------
-            # # https://www.twilio.com/blog/using-twilio-sendgrid-send-emails-python-django
-            # otp_string = f"Your OTP for CorpMart is {random_otp}."
-            # send_mail("OTP for CorpMart", otp_string, "paramchauhan21@gmail.com", [user.email])
+            # resp1 = requests.post(
+            #     "https://api.mailgun.net/v3/sandboxaf9c0106b8cb4a059670a8b6f9489624.mailgun.org/messages",
+            #     auth=("api", "d2fc8e1522559001ad13c696fc467c4c-f7d0b107-3ec830ce"),
+            #     data={"from": "Excited User mailgun@sandboxaf9c0106b8cb4a059670a8b6f9489624.mailgun.org",
+            #           "to": [f"{user.email}", ],
+            #           "subject": "CorpMart OTP",
+            #           "text": f"Your Corpmart OTP is {random_otp}"})
+            # print(resp1)
             # # End Email-------------------------------------------------------------------------------------------------
             #
             # # For SMS---------------------------------------------------------------------------------------------------
