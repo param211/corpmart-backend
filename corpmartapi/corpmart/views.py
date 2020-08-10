@@ -60,9 +60,9 @@ class GenerateOTPView(APIView):
             # # https://docs.fast2sms.com/#post
             # url = "https://www.fast2sms.com/dev/bulk"
             # var = "{#AA#}"
-            # payload = f"sender_id=FSTSMS&language=english&route=qt&numbers={user.mobile}&message=32122&variables={var}&variables_values={random_otp}"
+            # payload = f"sender_id=FSTSMS&language=english&route=qt&numbers={user.mobile}&message=33553&variables={var}&variables_values={random_otp}"
             # headers = {
-            #     'authorization': "liDGeo7BY84UcEmWIQxZCA0qFJjMS5nfkug6NwL1OvpHVaTyr35QimMDA3EVvXpS4FyskUIeH6TGw12r",
+            #     'authorization': "fvEdQ9yG7YA5bsazx3kPO2HL48pBXNoTMqUVJeIZ6RS0wutmDjWhmE1BH4YZyPwrqS8UIv9MbtFTXnuV",
             #     'cache-control': "no-cache",
             #     'content-type': "application/x-www-form-urlencoded"
             # }
