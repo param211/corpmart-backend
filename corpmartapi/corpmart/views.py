@@ -437,7 +437,7 @@ class ChatbotRequest(generics.CreateAPIView):
     # TODO: send sms/email to admin
     serializer_class = ChatbotRequestSerializer
 
-    def perform_update(self, serializer):
+    def perform_create(self, serializer):
         instance = serializer.save()
         admin_list = list(ChatbotNotification.objects.all())
         send_notification(admin_list)
