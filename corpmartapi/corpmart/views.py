@@ -52,12 +52,12 @@ class GenerateOTPView(APIView):
             )
             # # For Email-------------------------------------------------------------------------------------------------
             # resp1 = requests.post(
-            #     "https://api.mailgun.net/v3/sandboxaf9c0106b8cb4a059670a8b6f9489624.mailgun.org/messages",
+            #     "https://api.mailgun.net/v3/info.corpmart.in/messages",
             #     auth=("api", "d2fc8e1522559001ad13c696fc467c4c-f7d0b107-3ec830ce"),
-            #     data={"from": "Excited User mailgun@sandboxaf9c0106b8cb4a059670a8b6f9489624.mailgun.org",
+            #     data={"from": "otp@corpmart.in",
             #           "to": [f"{user.email}", ],
             #           "subject": "CorpMart OTP",
-            #           "text": f"Your Corpmart OTP is {random_otp}"})
+            #           "text": f"OTP for your CorpMart verification is {random_otp}"})
             # print(resp1)
             # # End Email-------------------------------------------------------------------------------------------------
             #
