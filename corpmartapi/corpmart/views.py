@@ -388,9 +388,12 @@ class MaxValueView(APIView):
 class ValidateTokenView(APIView):
 
     def get(self, request,):
-        user = request.user
-        return Response({"first_name": user.first_name, "last_name": user.last_name, "email": user.email,
-                         "mobile": user.mobile, "organisation_name": user.organisation_name}, )
+        try:
+            user = request.user
+            return Response({"first_name": user.first_name, "last_name": user.last_name, "email": user.email,
+                             "mobile": user.mobile, "organisation_name": user.organisation_name}, )
+        except ObjectDoesNotExist:
+            return Response({"error": "Wrong Credentials"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ChatbotRequest(generics.CreateAPIView):
