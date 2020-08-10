@@ -285,3 +285,12 @@ class ChatbotRequest(models.Model):
 
     def __str__(self):
         return f"Requested by -> {self.name} || Mobile -> {self.mobile} || Email -> {self.email}"
+
+
+class ChatbotNotification(models.Model):
+    name = models.CharField(max_length=100)
+    mobile = models.BigIntegerField(blank=True)
+    email = models.EmailField(blank=True)
+
+    def __str__(self):
+        return f"Name -> {self.name} || Mobile -> {self.mobile} || Email -> {self.email}"

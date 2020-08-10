@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import User, OneTimePassword, Business, Balancesheet, Blog, Testimonial, ContactRequest, ViewHistory,\
-    ChatbotRequest
+    ChatbotRequest, ChatbotNotification
 from django.apps import apps
 from rest_framework.authtoken.models import Token
 
@@ -76,3 +76,4 @@ admin.site.register(Testimonial)
 admin.site.register(ContactRequest, CustomContactRequestAdmin)
 admin.site.register(ChatbotRequest, CustomChatbotRequestAdmin)
 admin.site.register(ViewHistory)
+admin.site.register(ChatbotNotification)

@@ -13,7 +13,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
-from .models import User, OneTimePassword, Business, Balancesheet, ViewHistory
+from .models import User, OneTimePassword, Business, Balancesheet, ViewHistory, ChatbotNotification
 from .serializers import UserSerializer, SignupSerializer, BusinessListSerializer, BusinessDetailSerializer, \
     PostBusinessSerializer, ContactRequestSerializer, BalancesheetSerializer, ViewHistorySerializer,\
     ChatbotRequestSerializer
@@ -401,10 +401,45 @@ class ValidateTokenView(APIView):
             return Response({"error": "Wrong Credentials"}, status=status.HTTP_400_BAD_REQUEST)
 
 
+def send_notification(admin_list):
+    for admin in admin_list:
+        # For Email-------------------------------------------------------------------------------------------------
+        resp1 = requests.post(
+            "https://api.mailgun.net/v3/info.corpmart.in/messages",
+            auth=("api", "d2fc8e1522559001ad13c696fc467c4c-f7d0b107-3ec830ce"),
+            data={"from": "chatbot@corpmart.in",
+                  "to": [f"{admin.email}", ],
+                  "subject": "CorpMart Chatbot Request Received",
+                  "text": f"New request received through chatbot, please check admin dashboard for more details. Goto Dashboard -> Chatbot Requests"})
+        # print(resp1)
+        # End Email-------------------------------------------------------------------------------------------------
+
+        # For SMS---------------------------------------------------------------------------------------------------
+        # https://docs.fast2sms.com/#post
+        url = "https://www.fast2sms.com/dev/bulk"
+        var = "{#AA#}"
+        payload = f"sender_id=FSTSMS&language=english&route=qt&numbers={admin.mobile}&message=33555"
+        headers = {
+            'authorization': "fvEdQ9yG7YA5bsazx3kPO2HL48pBXNoTMqUVJeIZ6RS0wutmDjWhmE1BH4YZyPwrqS8UIv9MbtFTXnuV",
+            'cache-control': "no-cache",
+            'content-type': "application/x-www-form-urlencoded"
+        }
+
+        resp = requests.request("POST", url, data=payload, headers=headers)
+        # print(resp.text)
+        # End SMS---------------------------------------------------------------------------------------------------
+
+
 class ChatbotRequest(generics.CreateAPIView):
     """
     Allows to post chatbot requests
     """
     # TODO: send sms/email to admin
     serializer_class = ChatbotRequestSerializer
+
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        admin_list = list(ChatbotNotification.objects.all())
+        send_notification(admin_list)
+
 
