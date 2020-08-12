@@ -119,7 +119,7 @@ class ContactRequestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ContactRequest
-        fields = '__all__'
+        fields = ['requested_by', 'business']
 
 
 class BalancesheetSerializer(serializers.ModelSerializer):
