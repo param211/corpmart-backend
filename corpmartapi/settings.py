@@ -110,7 +110,7 @@ if os.getenv('GAE_APPLICATION', None):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'HOST': '/cloudsql/corpmart:asia-south1:cmdb',
+            'HOST': '/cloudsql/corpmart:asia-south1:cmdb2',
             'USER': 'admin',
             'PASSWORD': 'corpmart3463dfh@1245',
             'NAME': 'db1',
