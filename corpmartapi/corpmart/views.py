@@ -134,6 +134,7 @@ class BlogViewset(viewsets.ReadOnlyModelViewSet):
     Allow users to be view blogs
     """
     serializer_class = BlogSerializer
+    permission_classes = ()
     pagination_class = None
     queryset = Blog.objects.all().order_by('-updated_at')
 
@@ -143,8 +144,10 @@ class TestimonialViewset(viewsets.ReadOnlyModelViewSet):
     Allow users to be view blogs
     """
     serializer_class = TestimonialSerializer
+    permission_classes = ()
     pagination_class = None
     queryset = Testimonial.objects.all().order_by('-updated_at')
+
 
 class PostBusiness(generics.CreateAPIView):
     """
