@@ -242,6 +242,8 @@ class Testimonial(models.Model):
     designation = models.CharField(max_length=200)
     text = models.CharField(max_length=500)
     picture = models.ImageField(upload_to='profile_picture', blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class ContactRequest(models.Model):

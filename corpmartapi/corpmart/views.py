@@ -13,10 +13,10 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
-from .models import User, OneTimePassword, Business, Balancesheet, ViewHistory, ChatbotNotification
+from .models import User, OneTimePassword, Business, Balancesheet, ViewHistory, ChatbotNotification, Blog, Testimonial
 from .serializers import UserSerializer, SignupSerializer, BusinessListSerializer, BusinessDetailSerializer, \
     PostBusinessSerializer, ContactRequestSerializer, BalancesheetSerializer, ViewHistorySerializer,\
-    ChatbotRequestSerializer
+    ChatbotRequestSerializer, BlogSerializer, TestimonialSerializer
 from django.core.exceptions import ObjectDoesNotExist
 # Razorpay settings
 # import razorpay
@@ -128,6 +128,23 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
             queryset = User.objects.filter(mobile=user_mobile)
         return queryset
 
+
+class BlogViewset(viewsets.ReadOnlyModelViewSet):
+    """
+    Allow users to be view blogs
+    """
+    serializer_class = BlogSerializer
+    pagination_class = None
+    queryset = Blog.objects.all().order_by('-updated_at')
+
+
+class TestimonialViewset(viewsets.ReadOnlyModelViewSet):
+    """
+    Allow users to be view blogs
+    """
+    serializer_class = TestimonialSerializer
+    pagination_class = None
+    queryset = Testimonial.objects.all().order_by('-updated_at')
 
 class PostBusiness(generics.CreateAPIView):
     """

@@ -2,9 +2,11 @@ import datetime as dt
 import json
 from rest_framework import exceptions
 from rest_framework import serializers
-from .models import OneTimePassword, User, Business, ContactRequest, Balancesheet, ViewHistory, ChatbotRequest
+from .models import OneTimePassword, User, Business, ContactRequest, Balancesheet, ViewHistory, ChatbotRequest, Blog, \
+    Testimonial
 from rest_framework.authtoken.models import Token
 from django.core.exceptions import ObjectDoesNotExist
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -127,6 +129,20 @@ class BalancesheetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Balancesheet
         fields = ['file']
+
+
+class BlogSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Blog
+        fields = '__all__'
+
+
+class TestimonialSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Testimonial
+        fields = '__all__'
 
 
 class ViewHistorySerializer(serializers.ModelSerializer):
