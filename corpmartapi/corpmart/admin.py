@@ -16,9 +16,9 @@ for app_config in apps.get_app_configs():
 class CustomUserAdmin(UserAdmin):
     model = User
     list_display = ('email', 'first_name', 'last_name', 'mobile')
-    list_filter = ('email', 'mobile',)
+    list_filter = ('email', 'mobile', 'is_superuser')
     fieldsets = (
-        (None, {'fields': ('email', 'mobile', 'first_name', 'last_name', 'country_code', 'organisation_name')}),
+        (None, {'fields': ('email', 'mobile', 'first_name', 'last_name', 'country_code', 'organisation_name', 'is_superuser')}),
     )
     add_fieldsets = (
         (None, {
