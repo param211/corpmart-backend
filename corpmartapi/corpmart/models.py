@@ -232,6 +232,7 @@ class Balancesheet(models.Model):
 class Blog(models.Model):
     blog_title = models.CharField(max_length=200)
     blog_text = models.CharField(max_length=10000)
+    picture = models.ImageField(upload_to='blog_picture', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     posted_by = models.CharField(max_length=100)
