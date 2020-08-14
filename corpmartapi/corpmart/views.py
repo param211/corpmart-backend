@@ -460,6 +460,6 @@ class ChatbotRequest(generics.CreateAPIView):
     def perform_create(self, serializer):
         instance = serializer.save()
         admin_list = list(ChatbotNotification.objects.all())
-        # send_notification(admin_list)
+        send_notification(admin_list)
 
 
