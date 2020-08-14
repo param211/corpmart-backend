@@ -237,6 +237,9 @@ class Blog(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     posted_by = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.blog_title
+
 
 class Testimonial(models.Model):
     name = models.CharField(max_length=100)
@@ -245,6 +248,9 @@ class Testimonial(models.Model):
     picture = models.ImageField(upload_to='profile_picture', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
 
 
 class ContactRequest(models.Model):
