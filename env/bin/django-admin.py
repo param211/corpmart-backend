@@ -1,4 +1,4 @@
-#!/home/param211/Projects/corpmartapi/env/bin/python3
+#!/home/param211/projects/corpmart/backend/env/bin/python3
 from django.core import management
 
 if __name__ == "__main__":

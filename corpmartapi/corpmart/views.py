@@ -455,6 +455,7 @@ class ChatbotRequest(generics.CreateAPIView):
     Allows to post chatbot requests
     """
     # TODO: send sms/email to admin
+    permission_classes = ()
     serializer_class = ChatbotRequestSerializer
 
     def perform_create(self, serializer):

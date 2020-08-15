@@ -282,8 +282,8 @@ class ViewHistory(models.Model):
 
 
 class ChatbotRequest(models.Model):
-    name = models.CharField(max_length=100)
-    mobile = models.BigIntegerField(blank=True)
+    name = models.CharField(max_length=100, blank=True)
+    mobile = models.BigIntegerField(blank=True, null=True)
     email = models.EmailField(blank=True)
     query = models.CharField(max_length=5000)
     # Following for admin
