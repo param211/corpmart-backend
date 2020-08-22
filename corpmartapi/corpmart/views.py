@@ -168,7 +168,7 @@ class BusinessListViewset(viewsets.ReadOnlyModelViewSet):
     permission_classes = ()
 
     def get_queryset(self):
-        queryset = Business.objects.all()
+        queryset = Business.objects.all().order_by("-created_at")
         queryset = queryset.filter(is_verified=True)
         state = self.request.query_params.get('state')
         country = self.request.query_params.get('country')
