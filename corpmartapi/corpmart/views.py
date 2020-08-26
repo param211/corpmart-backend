@@ -387,7 +387,28 @@ class UserBusinessViewset(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
+        sort_by = self.request.query_params.get('sort_by')
         queryset = Business.objects.filter(posted_by=user).order_by('-year_of_incorporation')
+
+        if sort_by is not None:
+            if sort_by == "1":
+                # latest first
+                queryset = queryset.order_by('-year_of_incorporation')
+            elif sort_by == "2":
+                queryset = queryset.order_by('year_of_incorporation')
+            elif sort_by == "3":
+                # ascending
+                queryset = queryset.order_by('authorised_capital')
+            elif sort_by == "4":
+                queryset = queryset.order_by('-authorised_capital')
+            elif sort_by == "5":
+                queryset = queryset.order_by('paidup_capital')
+            elif sort_by == "6":
+                queryset = queryset.order_by('-paidup_capital')
+            elif sort_by == "7":
+                queryset = queryset.order_by('admin_defined_selling_price')
+            elif sort_by == "8":
+                queryset = queryset.order_by('-admin_defined_selling_price')
 
         return queryset
 
