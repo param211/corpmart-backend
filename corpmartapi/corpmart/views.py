@@ -36,12 +36,15 @@ class GenerateOTPView(APIView):
     def post(self, request, ):
         email = request.data.get("email")
         mobile = request.data.get("mobile")
-        if email is not None:
-            user = User.objects.get(email=email)
-        elif mobile is not None:
-            user = User.objects.get(mobile=mobile)
-        else:
-            return Response({"provide_user_creds"}, )
+        try:
+            if email is not None:
+                user = User.objects.get(email=email)
+            elif mobile is not None:
+                user = User.objects.get(mobile=mobile)
+        
+        
+        except ObjectDoesNotExist:
+            return Response({"User doesnt exist"}, status=status.HTTP_400_BAD_REQUEST )
 
         random_otp = randint(10000, 99999)
 
