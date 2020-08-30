@@ -4,6 +4,7 @@ from .models import User, OneTimePassword, Business, Balancesheet, Blog, Testimo
     ChatbotRequest, ChatbotNotification
 from django.apps import apps
 from rest_framework.authtoken.models import Token
+from markdownx.admin import MarkdownxModelAdmin
 
 
 # De-register all models from other apps
@@ -71,7 +72,7 @@ admin.site.register(User, CustomUserAdmin)
 admin.site.register(Business, CustomBusinessAdmin)
 admin.site.register(Balancesheet, CustomBalancesheetAdmin)
 # admin.site.register(BalancesheetPayment, CustomBalancesheetPaymentAdmin)
-admin.site.register(Blog)
+admin.site.register(Blog, MarkdownxModelAdmin)
 admin.site.register(Testimonial)
 admin.site.register(ContactRequest, CustomContactRequestAdmin)
 admin.site.register(ChatbotRequest, CustomChatbotRequestAdmin)

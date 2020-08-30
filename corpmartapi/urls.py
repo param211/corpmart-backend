@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import path, include
 from corpmartapi.corpmart import views
 from rest_framework import routers
+from django.conf.urls import url, include
 
 router = routers.DefaultRouter()
 router.register(r'user', views.UserViewSet, basename="user")
@@ -42,6 +43,7 @@ urlpatterns = [
     path('api/v1/chatbot-request', views.ChatbotRequest.as_view(), name="chatbot-request"),
     path('api/v1/max-value', views.MaxValueView.as_view(), name="max-value"),
     path('api/v1/validate-token', views.ValidateTokenView.as_view(), name="validate-token"),
+    url(r'^markdownx/', include('markdownx.urls')),
     # path('api/v1/orderbalancesheet', views.OrderBalancesheet.as_view(), name="orderbalancesheet"),
     # path('api/v1/successfulpayment', views.SuccessfulPayment.as_view(), name="successfulpayment")
 ]

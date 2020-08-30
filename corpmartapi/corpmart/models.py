@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import ugettext_lazy as _
 from datetime import datetime
+from markdownx.models import MarkdownxField
 
 
 # https://tech.serhatteker.com/post/2020-01/email-as-username-django/
@@ -233,7 +234,7 @@ class Balancesheet(models.Model):
 
 class Blog(models.Model):
     blog_title = models.CharField(max_length=200)
-    blog_text = models.CharField(max_length=10000)
+    blog_text = MarkdownxField()
     picture = models.ImageField(upload_to='blog_picture', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

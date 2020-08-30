@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'corpmartapi.corpmart',
     'corsheaders',
     'django.contrib.postgres',
+    'markdownx',
 ]
 
 MIDDLEWARE = [
