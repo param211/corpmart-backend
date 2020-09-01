@@ -61,7 +61,7 @@ class GenerateOTPView(APIView):
                       "to": [f"{user.email}", ],
                       "subject": "CorpMart OTP",
                       "text": f"OTP for your CorpMart verification is {random_otp}"})
-            print(resp1)
+            # print(resp1)
             # End Email-------------------------------------------------------------------------------------------------
 
             # For SMS---------------------------------------------------------------------------------------------------
@@ -161,6 +161,20 @@ class PostBusiness(generics.CreateAPIView):
     def perform_create(self, serializer):
         serializer.save(admin_defined_selling_price=self.request.data.get('user_defined_selling_price'),
                         is_verified=False)
+        
+        admin_list = list(ChatbotNotification.objects.all())
+        for admin in admin_list:
+            # For Email-------------------------------------------------------------------------------------------------
+            resp1 = requests.post(
+                "https://api.mailgun.net/v3/info.corpmart.in/messages",
+                auth=("api", "d2fc8e1522559001ad13c696fc467c4c-f7d0b107-3ec830ce"),
+                data={"from": "admin@corpmart.in",
+                    "to": [f"{admin.email}", ],
+                    "subject": "CorpMart: New Business Listing Request",
+                    "text": f"New business listing request received, check admin portal for details. Business Name: {self.request.data.get('business_name')}"})
+            # print(resp1)
+            # End Email-------------------------------------------------------------------------------------------------
+
 
 
 class BusinessListViewset(viewsets.ReadOnlyModelViewSet):
