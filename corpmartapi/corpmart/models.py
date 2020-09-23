@@ -80,6 +80,7 @@ class Business(models.Model):
                   ("Arunachal Pradesh","Arunachal Pradesh"),
                   ("Assam","Assam"),("Bihar","Bihar"),
                   ("Chhattisgarh","Chhattisgarh"),
+                  ("Delhi","Delhi"),
                   ("Goa","Goa"),
                   ("Gujarat","Gujarat"),
                   ("Haryana","Haryana"),
@@ -109,7 +110,6 @@ class Business(models.Model):
                   ("Dadra and Nagar Haveli","Dadra and Nagar Haveli"),
                   ("Daman and Diu","Daman and Diu"),
                   ("Lakshadweep","Lakshadweep"),
-                  ("National Capital Territory of Delhi","National Capital Territory of Delhi"),
                   ("Puducherry","Puducherry"),
                   ('Ladakh','Ladakh'),)
 
