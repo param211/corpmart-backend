@@ -129,6 +129,7 @@ class Business(models.Model):
         ('Micro-Finance Company', 'Micro-Finance Company'),
         ('Insurance Company', 'Insurance Company'),
         ('Direct Selling Company', 'Direct Selling Company'),
+        ('Pvt. Ltd.', 'Pvt. Ltd.'),
         ('Others', 'Others'),
     )
     INDUSTRY_LIST = (
