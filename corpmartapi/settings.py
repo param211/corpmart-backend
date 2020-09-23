@@ -146,7 +146,7 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
             'HOST': '127.0.0.1',
-            'PORT': '3306',
+            'PORT': '3307',
             'NAME': 'db1',
             'USER': 'admin',
             'PASSWORD': 'corpmart3463dfh@1245',
