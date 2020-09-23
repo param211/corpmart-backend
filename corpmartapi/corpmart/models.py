@@ -191,7 +191,7 @@ class Business(models.Model):
     sale_description = models.CharField(max_length=500, blank=True)
     year_of_incorporation = models.IntegerField(null=True, blank=True)
     has_gst_number = models.BooleanField(null=True)
-    has_import_export_code = models.BooleanField(null=True)
+    roc_up_to_date = models.BooleanField(null=True)
     has_bank_account = models.BooleanField(null=True)
     has_other_license = models.BooleanField(null=True)
     other_license = models.CharField(max_length=500, blank=True)
