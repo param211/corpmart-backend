@@ -1,0 +1,1 @@
+web: gunicorn corpmartapi.wsgi --log-file -
